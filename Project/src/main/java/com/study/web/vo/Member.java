@@ -1,6 +1,9 @@
 package com.study.web.vo;
 
 public class Member {
+	private String id;
+	private String pwd;
+	private String cls;
     private String name;
     private String email;
     private String phone;
@@ -28,6 +31,30 @@ public class Member {
     public void setphone(String phone) {
         this.phone = phone;
     }
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+
+	public String getCls() {
+		return cls;
+	}
+
+	public void setCls(String cls) {
+		this.cls = cls;
+	}
  
 }// end of class
 

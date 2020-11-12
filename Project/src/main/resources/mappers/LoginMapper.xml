@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.web.mapper.LoginMapper">
+    <resultMap type="Member" id="MemberResultMap">
+    	<result property="id" column="uId" />
+		<result property="pwd" column="uPwd" />
+		<result property="cls" column="uClass" />
+        <result property="name" column="uName" />
+        <result property="email" column="uEmail" />
+        <result property="phone" column="uPhone" />
+    </resultMap>
+    
+    <!-- 로그인 가능 여부	 -->
+    <select id="getLogin" resultMap="MemberResultMap">
+        SELECT * FROM user
+        WHERE uId = #{id}
+        AND   uPwd	= #{pwd}
+    </select>
+
+</mapper>
