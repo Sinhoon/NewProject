@@ -33,7 +33,6 @@ public class MemberController {
 	@RequestMapping("/member")
 	public ModelAndView main(Locale locale, Model model) {
 		logger.info("Welcome main.", locale);
-
 		// view 화면인 main.jsp에 DB로부터 읽어온 데이터를 보여준다.
 		ModelAndView result = new ModelAndView();
 		// addObject view에 넘어가는 데이터

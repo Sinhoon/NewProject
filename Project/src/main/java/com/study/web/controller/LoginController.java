@@ -45,19 +45,25 @@ public class LoginController {
 	public HashMap<String, String> login(Locale locale, Model model, HttpServletRequest request, HttpSession session)
 			throws Exception {
 		HashMap<String, String> result = new HashMap<String, String>();
-		// ModelAndView result = null;
 		Member vo = new Member();
 		vo.setId(request.getParameter("id"));
 		vo.setPwd(request.getParameter("pwd"));
-
-		Member chkvo = loginDAOService.getLogin(vo);
-		if (chkvo == null) {
-			// result = new ModelAndView(new RedirectView("/login"));
-			result.put("Code", "0001");
+		Member chkld = loginDAOService.getIdchk(vo.getId());
+		if (chkld != null) {
+			if (chkld.getLock() < 5) {
+				Member chkpwd = loginDAOService.getLogin(vo);
+				if (chkpwd == null) {
+					loginDAOService.setLock(chkld.getId());
+					result.put("Code", "0003");
+				} else {
+					session.setAttribute("Member", chkpwd);
+					result.put("Code", "0000");
+				}
+			} else {
+				result.put("Code", "0002");
+			}
 		} else {
-			session.setAttribute("Member", chkvo);
-			// result = new ModelAndView(new RedirectView("/home"));
-			result.put("Code", "0000");
+			result.put("Code", "0001");
 		}
 		return result;
 	}
