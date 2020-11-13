@@ -25,8 +25,15 @@ public class LoginService implements LoginDAO {
 		// sqlSession을 통하여 매핑한다.
 		LoginMapper loginMapper = sqlSession.getMapper(LoginMapper.class);
 		// getMember()의 메소드명과 mapper.mxl과 id는 동일해야한다.
-		result = loginMapper.getLogin(vo);
+		try {
+			result = loginMapper.getLogin(vo);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return result;
+		}
 		return result;
+
 	}
 
 }

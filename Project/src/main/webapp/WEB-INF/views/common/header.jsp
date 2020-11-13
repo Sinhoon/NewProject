@@ -1,14 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.study.web.vo.Member"%>
-<%@ page session="true" %>
+<%@ page session="true"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <title>상단 영역</title>
-
-<link rel="stylesheet" href="css/bootstrap.min.css">
 
 <style type="text/css">
 #wrap {
@@ -17,61 +15,64 @@
 	height: 150px;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<%
+	Member meb = new Member();
+	if (session.getAttribute("Member") != null) {
+		meb = (Member) session.getAttribute("Member");
+	} else {
+%>
+<script>
+	window.location = "${pageContext.request.contextPath}/login";
+</script>
+<%
+	}
+%>
+
 
 <script type="text/javascript">
+	function expireSession() {
+		window.location = "${pageContext.request.contextPath}/login";
+	}
+	setTimeout('expireSession()',
+<%=request.getSession().getMaxInactiveInterval() * 200%>
+	);
+
 	function changeView(value) {
 
-		if (value == "0") // HOME 버튼 클릭시 첫화면으로 이동
-		{
-			location.href = "MainForm.jsp";
-		} else if (value == "1") // 로그인 버튼 클릭시 로그인 화면으로 이동
-		{
-			location.href = "${pageContext.request.contextPath}/loginForm";
-		} else if (value == "2") // 회원가입 버튼 클릭시 회원가입 화면으로 이동
-		{
-			location.href = "MainForm.jsp?contentPage=member/view/JoinForm.jsp";
-		} else if (value == "3") // 로그아웃 버튼 클릭시 로그아웃 처리
-		{
-			location.href = "member/pro/LogoutPro.jsp";
+		if (value == "0") {
+			location.href = "${pageContext.request.contextPath}/home";
+		} else if (value == "1") {
+			location.href = "${pageContext.request.contextPath}/board";
+		} else if (value == "2") {
+			location.href = "${pageContext.request.contextPath}/member";
+		} else if (value == "3") {
+			location.href = "${pageContext.request.contextPath}/logout";
 		}
 	}
 </script>
 
-<%
-
-Member vo = new Member();
-vo.setId("root");
-vo.setPwd("1234");
-session.setAttribute("LOGIN", vo); //LOGIN이라는 이름으로 vo 객체를 담아 준다.
-
-%>
-
 </head>
 <body>
+	<!--  메뉴바 -->
 	<div id="wrap">
 		<p>
 			<button class="btn btn-success" onclick="changeView(0)">HOME</button>
-			<%
-				// 로그인 안되었을 경우 - 로그인, 회원가입 버튼을 보여준다.
-				if (session.getAttribute("sessionID") == null) {
-			%>
-			<button id="loginBtn" class="btn btn-primary" onclick="changeView(1)">로그인</button>
-
-
-			<%
-				// 로그인 되었을 경우 - 로그아웃, 내정보 버튼을 보여준다.
-				} else {
-			%>
+			<button id="updateBtn" class="btn btn-primary"
+				onclick="changeView(1)">게시판</button>
+			<button id="memberViewBtn" class="btn btn-warning"
+				onclick="changeView(2)">회원관리</button>
 			<button id="logoutBtn" class="btn btn-primary"
 				onclick="changeView(3)">로그아웃</button>
-			<button id="updateBtn" class="btn btn-primary">내정보</button>
-			<%
-				}
-			%>
+		<h5>
+			<%=meb.getname()%>
+			님 안녕하세요
+		</h5>
 
-			<button id="memberViewBtn" class="btn btn-warning">회원보기</button>
 		</p>
 	</div>
+
 </body>
 </html>
 
