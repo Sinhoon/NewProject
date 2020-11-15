@@ -11,5 +11,9 @@
     <h2 align="center" style="margin-top: 200px;">메인</h2>
 </section>
  
- 
+<!--  <a href="memberlist.do"> <input type="button" value="회원관리">  </a>  -->
 <%@include file ="common/footer.jsp" %>
+ 
+
+ 
+ 

@@ -1,78 +1,140 @@
 package com.study.web.vo;
 
 public class Member {
-	private int num;
-	private String id;
-	private String pwd;
-	private String cls;
-    private String name;
-    private String email;
-    private String phone;
-    private int lock;
-    
-    public String getname() {
-        return name;
-    }
- 
-    public void setname(String name) {
-        this.name = name;
-    }
- 
-    public String getemail() {
-        return email;
-    }
- 
-    public void setemail(String email) {
-        this.email = email;
-    }
- 
-    public String getphone() {
-        return phone;
-    }
- 
-    public void setphone(String phone) {
-        this.phone = phone;
-    }
+	private int uNum;
+	private String uDept;
+	private String uClass;
+	private String uName;
+	private String uId;
+	private String uPwd;
+	private String uBirth;
+	private String uPhone;
+	private String uEmail;
+	private String uImg;
+	private String uReguser;
+	private String uRegdate;
+	private String uModdate;
+	private String uModuser;
+	private int uLock;
 
-	public String getId() {
-		return id;
+	public int getuNum() {
+		return uNum;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setuNum(int uNum) {
+		this.uNum = uNum;
 	}
 
-	public String getPwd() {
-		return pwd;
+	public String getuDept() {
+		return uDept;
 	}
 
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
+	public void setuDept(String uDept) {
+		this.uDept = uDept;
 	}
 
-	public String getCls() {
-		return cls;
+	public String getuClass() {
+		return uClass;
 	}
 
-	public void setCls(String cls) {
-		this.cls = cls;
+	public void setuClass(String uClass) {
+		this.uClass = uClass;
 	}
 
-	public int getLock() {
-		return lock;
+	public String getuName() {
+		return uName;
 	}
 
-	public void setLock(int lock) {
-		this.lock = lock;
+	public void setuName(String uName) {
+		this.uName = uName;
 	}
 
-	public int getNum() {
-		return num;
+	public String getuId() {
+		return uId;
 	}
 
-	public void setNum(int num) {
-		this.num = num;
+	public void setuId(String uId) {
+		this.uId = uId;
 	}
- 
+
+	public String getuPwd() {
+		return uPwd;
+	}
+
+	public void setuPwd(String uPwd) {
+		this.uPwd = uPwd;
+	}
+
+	public String getuBirth() {
+		return uBirth;
+	}
+
+	public void setuBirth(String uBirth) {
+		this.uBirth = uBirth;
+	}
+
+	public String getuPhone() {
+		return uPhone;
+	}
+
+	public void setuPhone(String uPhone) {
+		this.uPhone = uPhone;
+	}
+
+	public String getuEmail() {
+		return uEmail;
+	}
+
+	public void setuEmail(String uEmail) {
+		this.uEmail = uEmail;
+	}
+
+	public String getuImg() {
+		return uImg;
+	}
+
+	public void setuImg(String uImg) {
+		this.uImg = uImg;
+	}
+
+	public String getuReguser() {
+		return uReguser;
+	}
+
+	public void setuReguser(String uReguser) {
+		this.uReguser = uReguser;
+	}
+
+	public String getuRegdate() {
+		return uRegdate;
+	}
+
+	public void setuRegdate(String uRegdate) {
+		this.uRegdate = uRegdate;
+	}
+
+	public String getuModdate() {
+		return uModdate;
+	}
+
+	public void setuModdate(String uModdate) {
+		this.uModdate = uModdate;
+	}
+
+	public String getuModuser() {
+		return uModuser;
+	}
+
+	public void setuModuser(String uModuser) {
+		this.uModuser = uModuser;
+	}
+
+	public int getuLock() {
+		return uLock;
+	}
+
+	public void setuLock(int uLock) {
+		this.uLock = uLock;
+	}
+
 }// end of class
-

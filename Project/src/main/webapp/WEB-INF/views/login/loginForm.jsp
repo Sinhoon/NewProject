@@ -14,10 +14,6 @@
 		<br />
 	</form>
 	<button id="login_btn">로그인</button>
-	<!-- 로그인 실패시 메세지 -->
-	<!-- param.변수 => request.getParameter("변수")
-	<span style="color: red;">${param.message}</span>
-     -->
 </body>
 <script>
 	$(document).ready(function() {
@@ -29,7 +25,7 @@
 		$.ajax({
 			url : "${pageContext.request.contextPath}/loginPro.do",
 			type : "POST",
-			async: false, 
+			async : false,
 			data : {
 				id : $("#id").val(),
 				pwd : $("#pwd").val()
@@ -37,14 +33,11 @@
 			success : function(data) {
 				if (data.Code == "0000") {
 					window.location.href = "${pageContext.request.contextPath}/home";
-				} 
-				else if(data.Code == "0001"){
+				} else if (data.Code == "0001") {
 					alert("없는 아이디입니다");
-				}
-				else if(data.Code == "0002"){
+				} else if (data.Code == "0002") {
 					alert("잠긴 아이디입니다");
-				}
-				else {
+				} else {
 					alert("비밀번호를 다시 확인해주세요");
 				}
 			},

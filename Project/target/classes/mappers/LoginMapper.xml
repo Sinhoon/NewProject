@@ -5,31 +5,31 @@
 
 <mapper namespace="com.study.web.mapper.LoginMapper">
 	<resultMap type="Member" id="MemberResultMap">
-		<result property="id" column="uId" />
-		<result property="pwd" column="uPwd" />
-		<result property="cls" column="uClass" />
-		<result property="name" column="uName" />
-		<result property="lock" column="uLock" />
+		<result property="uId" column="uId" />
+		<result property="uPwd" column="uPwd" />
+		<result property="uClass" column="uClass" />
+		<result property="uName" column="uName" />
+		<result property="uLock" column="uLock" />
 	</resultMap>
 
 	<!-- 비밀번호 일치 여부 -->
-	<select id="getLogin" resultMap="MemberResultMap">
+	<select id="getLogin" resultType="Member">
 		SELECT * FROM user
-		WHERE uId = #{id}
-		AND uPwd = #{pwd}
+		WHERE uId = #{uId}
+		AND uPwd = #{uPwd}
 	</select>
 
 	<!-- 아이디 존재 여부 -->
-	<select id="getIdchk" resultMap="MemberResultMap" parameterType="string">
+	<select id="getIdchk" resultType="Member" parameterType="string">
 		SELECT * FROM user
-		WHERE uId = #{id}	
+		WHERE uId = #{uId}	
 	</select>
 	
 	<!-- 비밀번호 틀린횟수  -->
 	<update id="setLock" parameterType="string">
         update user set
             uLock = uLock + 1
-        where uId = #{id}
+        where uId = #{uId}
     </update> 
     
     

@@ -1,8 +1,6 @@
 package com.study.web.mapper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.study.web.vo.Member;
 
 public interface LoginMapper {

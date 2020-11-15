@@ -33,29 +33,25 @@ public class LoginController {
 	private LoginDAO loginDAOService;
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-	// 로그인 페이지
-	@RequestMapping("/login")
-	public String loginForm() {
-		return "login/loginForm";
-	}
-
-	// 시작 메인화면.
+	
+	// 로그인 실행
 	@ResponseBody
 	@RequestMapping(value = "/loginPro.do", method = RequestMethod.POST)
 	public HashMap<String, String> login(Locale locale, Model model, HttpServletRequest request, HttpSession session)
 			throws Exception {
 		HashMap<String, String> result = new HashMap<String, String>();
 		Member vo = new Member();
-		vo.setId(request.getParameter("id"));
-		vo.setPwd(request.getParameter("pwd"));
-		Member chkld = loginDAOService.getIdchk(vo.getId());
+		vo.setuId(request.getParameter("id"));
+		vo.setuPwd(request.getParameter("pwd"));
+		Member chkld = loginDAOService.getIdchk(vo.getuId());
 		if (chkld != null) {
-			if (chkld.getLock() < 5) {
+			if (chkld.getuLock() < 5) {
 				Member chkpwd = loginDAOService.getLogin(vo);
 				if (chkpwd == null) {
-					loginDAOService.setLock(chkld.getId());
+					loginDAOService.setLock(chkld.getuId());
 					result.put("Code", "0003");
 				} else {
+					System.out.println(chkpwd.getuLock());
 					session.setAttribute("Member", chkpwd);
 					result.put("Code", "0000");
 				}
@@ -70,7 +66,7 @@ public class LoginController {
 
 	// 로그아웃
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout(Member member, Model model, HttpSession session) {
+	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/login";
 	}

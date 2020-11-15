@@ -21,9 +21,9 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName"
-			value="com.mysql.jdbc.Driver" />
+			value="com.mysql.cj.jdbc.Driver" />
 		<property name="url"
-			value="jdbc:mysql://127.0.0.1:3306/project?serverTimezone=UTC" />
+			value="jdbc:mysql://127.0.0.1:3306/project?useSSL=false&amp;serverTimezone=Asia/Seoul" />
 		<property name="username" value="root" />
 		<property name="password" value="1234" />
 	</bean>
@@ -53,12 +53,21 @@
 
 	</bean>
 
-
 	<context:component-scan
 		base-package="com.study.web" />
 
+	
+	
+	<bean
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		id="multipartResolver">
+		<property name="maxUploadSize" value="10485760" />
+	</bean>
 
-</beans>	
+</beans>
+
+
+
 
 
 

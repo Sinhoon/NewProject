@@ -4,14 +4,62 @@
      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.study.web.mapper.MemberMapper">
-	<resultMap type="Member" id="MemberResultMap">
-		<result property="name" column="uName" />
-		<result property="email" column="uEmail" />
-		<result property="phone" column="uPhone" />
-	</resultMap>
 
-	<!-- 모든 유저 불러오기 -->
-	<select id="getMembers" resultMap="MemberResultMap">
-		SELECT * FROM user
+
+    <!-- id의 경우에는 Mapper.java에 동일하게 사용해야된다. -->
+
+       <!-- 회원목록 기본 -->  
+       <!-- 페이징을 받기위해 리절트타입으로 변경하였습니다. -->  
+       
+
+    	<!-- MySQL이라 오라클이랑은좀 다릅니다 -->
+        <select id="memberList" resultType="com.study.web.vo.Member" parameterType="map">
+   		SELECT R1.* FROM ( SELECT * FROM User 
+   		
+   		<!-- 검색 쿼리 추가하였습니다.-->
+   		<if test="keyField == 'all'"> WHERE uId like CONCAT('%',#{keyWord},'%') OR
+   									   		uName like CONCAT('%',#{keyWord},'%') </if> <!-- 검색 조건이 전체일때 -->
+   									
+   		<if test="keyField == 'uName'"> WHERE uName like CONCAT('%',#{keyWord},'%')</if> <!-- 이름 검색 -->
+   		<if test="keyField == 'uId'"> WHERE uId like CONCAT('%',#{keyWord},'%')</if>	<!-- ID 검색 -->	   
+			  			ORDER BY uClass ASC, uNum DESC ) R1
+			  			
+   			  			LIMIT #{start}, #{end} 	 
+ 		 </select> 
+    
+    
+  
+    <!-- 페이징 처리를 위한 컬럼 갯수 새기 -->
+    <select resultType="Integer" parameterType="map" id="Count"> 
+     SELECT COUNT(*) FROM user 
+   
+    </select>
+	
+	
+	<select resultType="com.study.web.vo.Member" parameterType="int" id="member_read"> 
+	SELECT * FROM User  
+	WHERE uNum = #{uNum} 
 	</select>
-</mapper>
+	
+	<!-- 중복아이디 체크 -->
+	<select resultType="com.study.web.vo.Member" parameterType="string" id="Idchk"> 
+	SELECT * FROM User  
+	WHERE uId = #{uId} 
+	</select>
+	
+	<!-- 권한 리스트 -->
+	<select resultType="hashmap"  id="getClasslist"> 
+	SELECT * FROM CLASS  
+	</select>
+	
+	<!-- 부서 리스트 -->
+	<select resultType="hashmap"  id="getDeptlist"> 
+	SELECT * FROM DEPT  
+	</select>
+ 
+    <!-- 회원 등록 -->
+    <insert id="regMember" parameterType="com.study.web.vo.Member">
+    INSERT INTO USER(uDept,uClass,uName,uId,uPwd,uBirth,uPhone,uEmail,uImg)
+	VALUE (CAST(#{uDept} as unsigned),CAST(#{uClass} as unsigned),#{uName},#{uId},#{uPwd},#{uBirth},#{uPhone},#{uEmail},#{uImg});
+    </insert>
+</mapper>	

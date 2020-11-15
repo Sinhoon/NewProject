@@ -19,10 +19,20 @@ public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	// ¸ŞÀÎ ÆäÀÌÁö
 	@RequestMapping("/home")
 	public String home() {
 		return "home";
+	}
+
+	@RequestMapping("/")
+	public String main() {
+		return "home";
+	}
+
+	// ë¡œê·¸ì¸ í˜ì´ì§€
+	@RequestMapping("/login")
+	public String loginForm() {
+		return "login/loginForm";
 	}
 
 }

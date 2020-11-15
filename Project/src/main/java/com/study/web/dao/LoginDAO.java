@@ -9,5 +9,4 @@ public interface LoginDAO {
 	public Member getLogin(Member vo);
 	public Member getIdchk(String id);
 	public void setLock(String id);
-
 }
