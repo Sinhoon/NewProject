@@ -12,13 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUpload {
 
 	public static void fileUpload(MultipartFile fileData, String path, String fileName) throws IOException {
-
 		String originalFileName = fileData.getOriginalFilename();
-
 		String contentType = fileData.getContentType();
-
 		long fileSize = fileData.getSize();
-
 		/*
 		 * 
 		 * System.out.println("file Info");

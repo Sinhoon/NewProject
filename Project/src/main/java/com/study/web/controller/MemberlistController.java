@@ -19,6 +19,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.support.RequestPartServletServerHttpRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -116,5 +118,22 @@ public class MemberlistController {
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
+	// 계정 잠금
+	@ResponseBody
+	@RequestMapping(value = "/lockPro.do", method = RequestMethod.GET)
+	public String lock(HttpServletRequest request) throws Exception {
+		String unum = request.getParameter("unum");
+		memberDAOService.golock(unum);
+		return "success";
+	}
+
+	// 계정 잠금 해체
+	@ResponseBody
+	@RequestMapping(value = "/unlockPro.do", method = RequestMethod.GET)
+	public String unlock(HttpServletRequest request) throws Exception {
+		String unum = request.getParameter("unum");
+		memberDAOService.unlock(unum);
+		return "success";
+	}
 
 }

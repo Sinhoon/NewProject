@@ -7,8 +7,55 @@
 <head>
 <%@include file="../common/header.jsp"%>
 <title>회원목록</title>
-
 </head>
+<script>
+	$(document).ready(function() {
+		$(".lock_btn").on('click', function() {
+			var temp = this;
+			lockChk(temp);
+		});
+
+		$(".unlock_btn").on('click', function() {
+			var temp = this;
+			unlockChk(temp);
+		});
+	});
+	function lockChk(temp) {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/lockPro.do",
+			type : "GET",
+			async : false,
+			data : {
+				unum : $(temp).val(),
+			},
+			success : function(data) {
+				$(temp).text("비활성화");
+				$(temp).attr('class', 'unlock_btn');
+			},
+			error : function() {
+				alert("err");
+			}
+		});
+	}
+	function unlockChk(temp) {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/unlockPro.do",
+			type : "GET",
+			async : false,
+			data : {
+				unum : $(temp).val(),
+			},
+			success : function(data) {
+				$(temp).text("활성화");
+				$(temp).attr('class', 'lock_btn');
+			},
+			error : function() {
+				alert("err");
+			}
+		});
+	}
+</script>
+
 <body>
 	<form action="memberlist.do" name="search" method="post"
 		onsubmit="return seachCheck()">
@@ -83,8 +130,11 @@
 
 					<td width="50" align="center"
 						style="font-family: Gulim; font-size: 12px;"><c:if
-							test="${member.uLock < 5}"> 활성화 </c:if> <c:if
-							test="${member.uLock >= 5}"> 정지 </c:if></td>
+							test="${member.uLock < 5}">
+							<button class="lock_btn" value="${member.uNum}">활성화</button>
+						</c:if> <c:if test="${member.uLock >= 5}">
+							<button class="unlock_btn" value="${member.uNum}">정지</button>
+						</c:if></td>
 				</tr>
 			</c:forEach>
 			<c:if test="${count==0}">
@@ -131,7 +181,8 @@
 	<!--  회원 등록 버튼 -->
 	<c:set var="uClass" value="<%=Integer.parseInt(meb.getuClass())%>"></c:set>
 	<c:if test="${uClass < 1}">
-		<input type="button" value="회원등록" onClick="location.href='${pageContext.request.contextPath}/member_regist'">
+		<input type="button" value="회원등록"
+			onClick="location.href='${pageContext.request.contextPath}/member_regist'">
 	</c:if>
 
 </body>

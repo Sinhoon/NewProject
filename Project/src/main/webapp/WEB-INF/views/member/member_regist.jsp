@@ -33,8 +33,10 @@ $(document).ready(function() {
 			type : "POST",
 			async : false,
 			data : formdata,
-			dataType: 'json',
+			processData: false,
+            contentType: false,
 			success : function(data) {
+				console.log(data);
 				if (data.Code == "0000") {
 					window.location.href = "${pageContext.request.contextPath}/memberlist";
 				}  else {
@@ -269,7 +271,7 @@ var inval_Arr = new Array(6).fill(false);
 		</div>
 		<div class="row mt-5">
 			<div class="col-12">
-				<form method="POST" action="/rId.do" id="uploadForm" enctype="multipart/form-data">
+				<form method="POST" id="uploadForm" enctype="multipart/form-data">
 					<!-- 아이디 -->
 					<div class="form-group">
 						<label for="user_id">아이디</label> <input type="text"
@@ -345,9 +347,8 @@ var inval_Arr = new Array(6).fill(false);
 					<div class="select_img">
 						<img src="" />
 					</div>
-					<button type="submit" id="reg_submit" class="btn btn-primary">등록</button>
 				</form>
-				<%=request.getRealPath("/")%>
+				<button type="submit" id="reg_submit" class="btn btn-primary">등록</button>
 				<script>
 					  $("#uImg").change(function(){
 					   if(this.files && this.files[0]) {

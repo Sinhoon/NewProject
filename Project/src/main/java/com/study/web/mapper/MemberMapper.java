@@ -13,5 +13,7 @@ public interface MemberMapper {
     List<Class> getClasslist();
     List<Dept> getDeptlist();
     void regMember(Member m);
+    void golock(String num);
+    void unlock(String num);
 }
 

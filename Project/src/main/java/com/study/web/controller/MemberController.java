@@ -75,15 +75,17 @@ public class MemberController {
 	// 회원 등록
 	@ResponseBody
 	@RequestMapping(value = "/rId.do", method = RequestMethod.POST)
-	public HashMap<String, String> rId(Locale locale, Model model,MultipartHttpServletRequest multipartRequest, Member vo,HttpSession session) throws IOException {
+	public HashMap<String, String> rId(Locale locale, Model model,MultipartHttpServletRequest multipartRequest,HttpSession session) throws IOException {
 		HashMap<String, String> result = new HashMap<String, String>();
+		Member vo = new Member();
 		MultipartFile file = multipartRequest.getFile("upload");
 		Calendar cal = Calendar.getInstance();
 		String fileName = file.getOriginalFilename();
 		String fileType = fileName.substring(fileName.lastIndexOf("."), fileName.length());
 		String replaceName = cal.getTimeInMillis() + fileType;
-		String path = "c://mywork";
+		String path = "c://image";
 		FileUpload.fileUpload(file, path, replaceName);
+		System.out.println(multipartRequest.getParameter("user_dept"));
 		vo.setuName(multipartRequest.getParameter("user_name"));
 		vo.setuId(multipartRequest.getParameter("user_id"));
 		vo.setuPwd(multipartRequest.getParameter("user_pw"));
@@ -92,7 +94,7 @@ public class MemberController {
 		vo.setuBirth(multipartRequest.getParameter("user_birth"));
 		vo.setuPhone(multipartRequest.getParameter("user_phone"));
 		vo.setuEmail(multipartRequest.getParameter("user_email"));
-		vo.setuImg(path+"/"+fileName);
+		vo.setuImg(path+"/"+replaceName);
 		vo.setuReguser(session.getId());
 		try {
 			memberDAOService.regMember(vo);

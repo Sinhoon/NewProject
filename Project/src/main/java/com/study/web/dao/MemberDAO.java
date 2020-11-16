@@ -16,4 +16,6 @@ public interface MemberDAO {
 	public List<Class> getClasslist();  // 모든권한리스트
 	public List<Dept> getDeptlist();   // 모든부서리스트
 	public void regMember(Member m);   // 회원 등록
+	void unlock(String num);
+	void golock(String num);
 }

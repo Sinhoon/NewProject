@@ -62,4 +62,16 @@
     INSERT INTO USER(uDept,uClass,uName,uId,uPwd,uBirth,uPhone,uEmail,uImg)
 	VALUE (CAST(#{uDept} as unsigned),CAST(#{uClass} as unsigned),#{uName},#{uId},#{uPwd},#{uBirth},#{uPhone},#{uEmail},#{uImg});
     </insert>
+    
+    <!-- 락 해체 -->
+    <update id="unlock" parameterType="string">
+    UPDATE user SET uLock = 0 
+    WHERE uNum = CAST(#{uNum} as unsigned)
+    </update>
+    
+    <!-- 락 설정 -->
+    <update id="golock" parameterType="string">
+    UPDATE user SET uLock = 5
+    WHERE uNum = CAST(#{uNum} as unsigned)
+    </update>
 </mapper>	

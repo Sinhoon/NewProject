@@ -1,4 +1,4 @@
-package com.study.web.service;
+	package com.study.web.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,6 +63,18 @@ public class MemberDAOService implements MemberDAO {
 	public void regMember(Member m) {
 		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
 		memberMapper.regMember(m);
+	}
+	
+	@Override
+	public void golock(String num) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		memberMapper.golock(num);
+	}
+	
+	@Override
+	public void unlock(String num) {
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		memberMapper.unlock(num);
 	}
 	
 
