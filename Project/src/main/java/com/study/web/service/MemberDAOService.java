@@ -77,5 +77,9 @@ public class MemberDAOService implements MemberDAO {
 		memberMapper.unlock(num);
 	}
 	
+	@Override
+	public void member_updateProc(HashMap<String, Object> map) {
+		sqlSession.update("member_updateProc", map);		
+	}
 
 }

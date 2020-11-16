@@ -55,6 +55,8 @@ public class MemberController {
 		mav.setViewName("/member/member_regist");
 		return mav;
 	}
+	
+	
 
 	// 중복 체크
 	@ResponseBody

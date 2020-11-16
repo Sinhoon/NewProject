@@ -185,5 +185,16 @@
 			onClick="location.href='${pageContext.request.contextPath}/member_regist'">
 	</c:if>
 
+	<!--  게시판 선택 -->
+
+
+	<label for="users_dept"> <c:forEach items="${deptlist}"
+			var="deptlist">
+			<input type="checkbox" name="color" value="${deptlist.dNum}"
+				style="display: none">
+			<div style="display: none">${deptlist.dName}</div>
+		</c:forEach>
+	</label>
+
 </body>
 </html>

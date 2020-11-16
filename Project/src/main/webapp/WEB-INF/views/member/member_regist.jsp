@@ -240,15 +240,6 @@ var inval_Arr = new Array(6).fill(false);
 			}
 		}
 		if(validAll){ // 유효성 모두 통과
-/* 			var mem = {};
-			mem.uId = $("#user_id").val();
-			mem.uPwd = $("#user_pw").val();
-			mem.uName = $("#user_name").val();
-			mem.uBirth = $("#user_birth").val();
-			mem.uPhone = $("#user_phone").val();
-			mem.uEmail = $("#user_email").val();
-			mem.uDept = $("#user_dept").val();
-			mem.uClass = $("#user_class").val();  */
 			regSubmit(); 
 			alert('회원 등록 완료');
 		} else{

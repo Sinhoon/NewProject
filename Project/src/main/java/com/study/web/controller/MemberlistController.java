@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.study.web.dao.MemberDAO;
+import com.study.web.vo.Dept;
 import com.study.web.vo.Member;
 import com.study.web.service.MemberDAOService;
 import com.study.web.paging.Paging;
@@ -42,7 +43,7 @@ public class MemberlistController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberlistController.class);
 
-	// 회원조회
+	// 회원조회 페이지
 	@RequestMapping("/memberlist") // http://localhost:8090/web/memberlist
 	public ModelAndView read(Locale locale, Model model, HttpServletRequest request,
 			@RequestParam(value = "pageNum", defaultValue = "1") int currentPage,
@@ -97,11 +98,15 @@ public class MemberlistController {
 		result.addObject("pagingHtml", pagingHtml);
 		result.addObject("number", Integer.valueOf(number)); // 전체 페이지
 
+		List<Dept> deptlist = memberDAOService.getDeptlist(); // 부서 종류
+		deptlist.remove(0);
+		result.addObject("deptlist", deptlist);
+
 		return result;
 	}
 
 /////////////////////////////////////////////
-	// 회원 자세히 보기 컨트롤러
+// 회원 자세히 보기 컨트롤러
 
 	@RequestMapping(value = "/member_read.do", method = RequestMethod.GET)
 	public ModelAndView read(@RequestParam("uNum") int uNum, Model model) {
@@ -118,6 +123,47 @@ public class MemberlistController {
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////// 수정폼 불러오는 컨트롤러
+	@RequestMapping("/member_update.do")
+	public ModelAndView member_update(@RequestParam("uNum") int uNum, Model model) {
+		System.out.println("회원정보 수정폼 불러오는 컨트롤러 작동"); // 작동은함
+		System.out.println("넘어오는 uNum값 " + uNum);
+		Member member = memberDAOService.member_read(uNum);
+		ModelAndView mav = new ModelAndView();
+
+		mav.setViewName("member/member_update");
+		mav.addObject("member", member);
+		return mav;
+	}
+////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////// 수정된 글을 DB에 저장하는 컨트롤러
+	@RequestMapping(value = "member_updateProc.do", method = RequestMethod.POST)
+	public ModelAndView member_updateProc(HttpServletRequest request, Member member,
+			@RequestParam("select_uDept") int select_uDept) { // 받아오는거
+
+// 사진 변경을위해 파일 업로드관련 코드 추가
+
+//////////////////////////////
+
+		HashMap<String, Object> map = new HashMap();
+		map.put("uNum", member.getuNum());
+		map.put("uPhone", member.getuPhone());
+		map.put("uDept", Integer.toString(select_uDept));
+
+		System.out.println("수정후 저장하려는 회원번호= " + member.getuNum());
+		System.out.println("수정후 저장하려는 전화번호= " + member.getuPhone());
+		System.out.println("수정후 저장하려는 부서번호= " + select_uDept);
+
+		System.out.println("수정된 회원정보를 저장하는 컨트롤러 작동"); // 작동확인
+		memberDAOService.member_updateProc(map); // DAO 연결
+
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("redirect:/memberlist.do"); // 작동
+// mav.setViewName("/member_read.do?uNum=member.getuNum()"); 	
+		return mav;
+	}
+
 	// 계정 잠금
 	@ResponseBody
 	@RequestMapping(value = "/lockPro.do", method = RequestMethod.GET)

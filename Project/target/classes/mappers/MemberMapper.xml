@@ -74,4 +74,11 @@
     UPDATE user SET uLock = 5
     WHERE uNum = CAST(#{uNum} as unsigned)
     </update>
+    
+    <!-- 회원 수정 -->
+    <update parameterType="map" id="member_updateProc" > 
+ 	UPDATE User 
+ 	SET uPhone= #{uPhone}, uDept=#{uDept}
+ 	WHERE uNum = #{uNum} 
+ 	</update>
 </mapper>	
