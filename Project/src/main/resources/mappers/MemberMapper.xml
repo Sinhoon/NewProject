@@ -14,14 +14,17 @@
 
     	<!-- MySQL이라 오라클이랑은좀 다릅니다 -->
         <select id="memberList" resultType="com.study.web.vo.Member" parameterType="map">
-   		SELECT R1.* FROM ( SELECT * FROM User 
+   		SELECT R1.* FROM ( SELECT * FROM User  <if test=" showDept != '0'.toString() "> WHERE uDept = #{showDept} </if>
    		
+   		<if test="keyWord != '' "> 
    		<!-- 검색 쿼리 추가하였습니다.-->
-   		<if test="keyField == 'all'"> WHERE uId like CONCAT('%',#{keyWord},'%') OR
+   		<if test="keyField == 'all'"> AND uId like CONCAT('%',#{keyWord},'%') OR
    									   		uName like CONCAT('%',#{keyWord},'%') </if> <!-- 검색 조건이 전체일때 -->
    									
-   		<if test="keyField == 'uName'"> WHERE uName like CONCAT('%',#{keyWord},'%')</if> <!-- 이름 검색 -->
-   		<if test="keyField == 'uId'"> WHERE uId like CONCAT('%',#{keyWord},'%')</if>	<!-- ID 검색 -->	   
+   		<if test="keyField == 'uName'"> AND  uName like CONCAT('%',#{keyWord},'%')</if> <!-- 이름 검색 -->
+   		<if test="keyField == 'uId'">  AND uId like CONCAT('%',#{keyWord},'%')</if>	<!-- ID 검색 -->	   
+   		
+   		</if>
 			  			ORDER BY uClass ASC, uNum DESC ) R1
 			  			
    			  			LIMIT #{start}, #{end} 	 
