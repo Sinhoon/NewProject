@@ -80,9 +80,14 @@
     </update>
     
     <!-- 회원 수정 -->
-    <update parameterType="map" id="member_updateProc" > 
+    <update parameterType="com.study.web.vo.Member"  id="modMember" > 
  	UPDATE User 
- 	SET uPhone= #{uPhone}, uDept=#{uDept}
+ 	SET uPhone= #{uPhone}, uDept=#{uDept} ,
+	uName= #{uName}, uPwd =#{uPwd} ,
+	uClass= #{uClass}, uBirth=#{uBirth} ,
+	uEmail= #{uEmail}, uImg=#{uImg}
  	WHERE uNum = #{uNum} 
  	</update>
+ 	
+ 	
 </mapper>	

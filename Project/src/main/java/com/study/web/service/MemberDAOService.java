@@ -82,4 +82,8 @@ public class MemberDAOService implements MemberDAO {
 		sqlSession.update("member_updateProc", map);		
 	}
 
+	
+	public void modMember(Member vo) {
+		sqlSession.update("modMember", vo);		
+	}
 }

@@ -19,4 +19,5 @@ public interface MemberDAO {
 	public void regMember(Member m);   // 회원 등록
 	void unlock(String num);
 	void golock(String num);
+	public void modMember(Member vo);
 }

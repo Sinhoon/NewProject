@@ -121,11 +121,16 @@ public class MemberlistController {
 		System.out.println("조회하는 회원의 uNum=" + uNum); // 잘받아옴
 
 		Member member = memberDAOService.member_read(uNum); // 일해라 DB
-
+		List<Class> classlist = memberDAOService.getClasslist();
+		List<Dept> deptlist = memberDAOService.getDeptlist();
+		classlist.remove(0);
+		deptlist.remove(0);
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("member/member_read");
+		
 		mav.addObject("member", member);
-
+		mav.addObject("classlist", classlist);
+		mav.addObject("deptlist", deptlist);
+		mav.setViewName("member/member_read");
 		return mav;
 	}
 

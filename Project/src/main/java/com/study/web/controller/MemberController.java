@@ -56,7 +56,6 @@ public class MemberController {
 		return mav;
 	}
 	
-	
 
 	// 중복 체크
 	@ResponseBody
@@ -96,7 +95,7 @@ public class MemberController {
 		vo.setuBirth(multipartRequest.getParameter("user_birth"));
 		vo.setuPhone(multipartRequest.getParameter("user_phone"));
 		vo.setuEmail(multipartRequest.getParameter("user_email"));
-		vo.setuImg(path+"/"+replaceName);
+		vo.setuImg(replaceName);
 		vo.setuReguser(session.getId());
 		try {
 			memberDAOService.regMember(vo);
@@ -108,4 +107,39 @@ public class MemberController {
 		return result;
 	}
 
+
+
+	@ResponseBody
+	@RequestMapping(value = "/mId.do", method = RequestMethod.POST)
+	public HashMap<String, String> mId(Locale locale, Model model,MultipartHttpServletRequest multipartRequest,HttpSession session) throws IOException {
+		HashMap<String, String> result = new HashMap<String, String>();
+		Member vo = new Member();
+		MultipartFile file = multipartRequest.getFile("upload");
+		Calendar cal = Calendar.getInstance();
+		String fileName = file.getOriginalFilename();
+		String fileType = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+		String replaceName = cal.getTimeInMillis() + fileType;
+		String path = "c://image";
+		FileUpload.fileUpload(file, path, replaceName);
+		System.out.println(multipartRequest.getParameter("user_dept"));
+		vo.setuNum(Integer.parseInt(multipartRequest.getParameter("user_num")));
+		vo.setuName(multipartRequest.getParameter("user_name"));
+		vo.setuId(multipartRequest.getParameter("user_id"));
+		vo.setuPwd(multipartRequest.getParameter("user_pw"));
+		vo.setuClass(multipartRequest.getParameter("user_class"));
+		vo.setuDept(multipartRequest.getParameter("user_dept"));
+		vo.setuBirth(multipartRequest.getParameter("user_birth"));
+		vo.setuPhone(multipartRequest.getParameter("user_phone"));
+		vo.setuEmail(multipartRequest.getParameter("user_email"));
+		vo.setuImg(replaceName);
+		vo.setuReguser(session.getId());
+		try {
+			memberDAOService.modMember(vo);
+		} catch (Exception e) {
+			result.put("Code", "0001");
+			return result;
+		}
+		result.put("Code", "0000");
+		return result;
+	}
 }
