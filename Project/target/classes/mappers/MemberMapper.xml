@@ -14,16 +14,17 @@
 
     	<!-- MySQL이라 오라클이랑은좀 다릅니다 -->
         <select id="memberList" resultType="com.study.web.vo.Member" parameterType="map">
-   		SELECT R1.* FROM ( SELECT * FROM User  <if test=" showDept != '0'.toString() "> WHERE uDept = #{showDept} </if>
+   		SELECT R1.* FROM ( SELECT * FROM User  <if test=" showdept != '0'.toString() ">WHERE uDept = #{showdept} </if>
+   		<if test=" showdept == '0'.toString() ">WHERE uDept = uDept </if>
    		
    		<if test="keyWord != '' "> 
    		<!-- 검색 쿼리 추가하였습니다.-->
-   		<if test="keyField == 'all'"> AND uId like CONCAT('%',#{keyWord},'%') OR
+   		<if test="keyField == 'all'"> AND  uId like CONCAT('%',#{keyWord},'%') OR
    									   		uName like CONCAT('%',#{keyWord},'%') </if> <!-- 검색 조건이 전체일때 -->
    									
    		<if test="keyField == 'uName'"> AND  uName like CONCAT('%',#{keyWord},'%')</if> <!-- 이름 검색 -->
-   		<if test="keyField == 'uId'">  AND uId like CONCAT('%',#{keyWord},'%')</if>	<!-- ID 검색 -->	   
-   		
+   		<if test="keyField == 'uId'"> AND uId like CONCAT('%',#{keyWord},'%')</if>	<!-- ID 검색 -->	   
+   			
    		</if>
 			  			ORDER BY uClass ASC, uNum DESC ) R1
 			  			
@@ -34,7 +35,7 @@
   
     <!-- 페이징 처리를 위한 컬럼 갯수 새기 -->
     <select resultType="Integer" parameterType="map" id="Count"> 
-     SELECT COUNT(*) FROM user 
+     SELECT COUNT(*) FROM user  <if test=" showdept != '0'.toString() ">WHERE uDept = #{showdept} </if> 
    
     </select>
 	

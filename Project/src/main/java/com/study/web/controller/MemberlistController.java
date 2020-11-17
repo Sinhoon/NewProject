@@ -42,97 +42,36 @@ public class MemberlistController {
 
 	@Autowired
 	private MemberDAO memberDAOService;
-
 	private static final Logger logger = LoggerFactory.getLogger(MemberlistController.class);
-
-	// 회원조회 선택 페이지
-	@RequestMapping(value = "/chklist.do", method = RequestMethod.GET) // http://localhost:8090/web/memberlist
-	public ModelAndView cread(Locale locale, Model model, HttpServletRequest request, HttpSession session,
-			@RequestParam(value = "pageNum", defaultValue = "1") int currentPage,
-			@RequestParam(value = "keyField", defaultValue = "") String keyField, // 제목, 이름, 내용, 전체
-			@RequestParam(value = "keyWord", defaultValue = "") String keyWord) {
-		String pagingHtml = "";
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		
-		String keyword = "";
-		HashMap<String, Object> map = new HashMap(); // 페이지넘버, 키필드, 키워드 가져와서 해쉬 맵에 저장
-		if (request.getParameter("keyWord") == "".toString()) {
-			System.out.println("비어있다.");
-		}else {
-			keyword = request.getParameter("keyWord");
-		}
-		map.put("showDept", request.getParameter("sdept")); // 부서 선택
-		map.put("keyField", request.getParameter("keyField"));
-		map.put("keyWord", keyword); // 해쉬맵 타입의 map 에 저장 keyWord에는 파람으로 가져온 keyWord를 저장
-
-		int count = this.memberDAOService.getCount(map); // DAO 연결 카운트에 저장
-
-		System.out.println("현재 회원수는 = " + count);
-		System.out.println("검색유형 , 키워드값(검색어) = " + keyField + ' ' + keyWord);
-
-		Paging page = new Paging(keyField, keyWord, currentPage, count, this.pageSize, this.blockCount,
-				"memberlist.do");
-
-		pagingHtml = page.getPagingHtml().toString();
-
-		map.put("start", Integer.valueOf(page.getStartCount()) - 1);
-		map.put("end", Integer.valueOf(page.getEndCount()));
-
-		System.out.println(Integer.valueOf(page.getStartCount())); // 1 1을뺴줘야하나?
-		System.out.println(Integer.valueOf(page.getEndCount())); // 10
-
-		List<com.study.web.vo.Member> memberList = null;
-		if (count > 0) { // 레코드 갯수가 0보다 크면
-			System.out.println(map);
-			memberList = this.memberDAOService.memberlist(map); // DAO에 연결
-			System.out.println("count는 0보다 큽니다.");
-		} else {
-			memberList = Collections.emptyList(); // 아니면 비어있게 나오게함
-			System.out.println("count는 0보다 작습니다.");
-		}
-		int number = count - (currentPage - 1) * this.pageSize;
-
-		// view 화면인 main.jsp에 DB로부터 읽어온 데이터를 보여준다.
-		ModelAndView result = new ModelAndView();
-		// addObject view에 넘어가는 데이터
-
-		System.out.println(memberList);
-
-		result.setViewName("/member/memberlist"); // 뷰의 jsp 이름
-		result.addObject("result", memberList); // 회원목록
-		result.addObject("count", Integer.valueOf(count)); // 글수
-		result.addObject("currentPage", Integer.valueOf(currentPage)); // 현재페이지
-		result.addObject("pagingHtml", pagingHtml);
-		result.addObject("number", Integer.valueOf(number)); // 전체 페이지
-
-		List<Dept> deptlist = memberDAOService.getDeptlist(); // 부서 종류
-		deptlist.remove(0);
-		result.addObject("deptlist", deptlist);
-
-		return result;
-	}
 
 	// 회원조회 페이지
 	@RequestMapping(value = "/memberlist") // http://localhost:8090/web/memberlist
 	public ModelAndView read(Locale locale, Model model, HttpServletRequest request, HttpSession session,
 			@RequestParam(value = "pageNum", defaultValue = "1") int currentPage,
-			@RequestParam(value = "keyField", defaultValue = "") String keyField, // 제목, 이름, 내용, 전체
-			@RequestParam(value = "keyWord", defaultValue = "") String keyWord) {
+			@RequestParam(value = "keyField", defaultValue = "all") String keyField, // 제목, 이름, 내용, 전체
+			@RequestParam(value = "keyWord", defaultValue = "") String keyWord,
+			@RequestParam(value = "showdept", defaultValue = "") String showdept,
+			@RequestParam(value = "before_showdept", defaultValue = "0") String before_showdept,
+			@RequestParam(value = "before_keyWord", defaultValue = "") String before_keyWord,
+			@RequestParam(value = "before_keyField", defaultValue = "all") String before_keyField
+			) {
 		String pagingHtml = "";
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		HashMap<String, Object> map = new HashMap(); // 페이지넘버, 키필드, 키워드 가져와서 해쉬 맵에 저장
 		Member mav = (Member) session.getAttribute("Member");
-		String sDept = mav.getuClass();
-		map.put("showDept", sDept); // 부서 선택
+		String sDept = mav.getuClass();	
+		if (showdept.equals("")) {
+			showdept = mav.getuClass();
+		}
+
+		map.put("showdept", showdept); // 부서 선택
 		map.put("keyField", keyField);
 		map.put("keyWord", keyWord); // 해쉬맵 타입의 map 에 저장 keyWord에는 파람으로 가져온 keyWord를 저장
 
-		int count = this.memberDAOService.getCount(map); // DAO 연결 카운트에 저장
-
+		int count = this.memberDAOService.getCount(map); // DAOs 연결 카운트에 저장
 		System.out.println("현재 회원수는 = " + count);
 		System.out.println("검색유형 , 키워드값(검색어) = " + keyField + ' ' + keyWord);
-
-		Paging page = new Paging(keyField, keyWord, currentPage, count, this.pageSize, this.blockCount,
+		Paging page = new Paging(showdept, keyField, keyWord, currentPage, count, this.pageSize, this.blockCount,
 				"memberlist.do");
 
 		pagingHtml = page.getPagingHtml().toString();
@@ -140,36 +79,31 @@ public class MemberlistController {
 		map.put("start", Integer.valueOf(page.getStartCount()) - 1);
 		map.put("end", Integer.valueOf(page.getEndCount()));
 
-		System.out.println(Integer.valueOf(page.getStartCount())); // 1 1을뺴줘야하나?
-		System.out.println(Integer.valueOf(page.getEndCount())); // 10
-
 		List<com.study.web.vo.Member> memberList = null;
 		if (count > 0) { // 레코드 갯수가 0보다 크면
+			System.out.println(map);
 			memberList = this.memberDAOService.memberlist(map); // DAO에 연결
-			System.out.println("count는 0보다 큽니다.");
+			System.out.println(count);
 		} else {
 			memberList = Collections.emptyList(); // 아니면 비어있게 나오게함
-			System.out.println("count는 0보다 작습니다.");
 		}
 		int number = count - (currentPage - 1) * this.pageSize;
-
 		// view 화면인 main.jsp에 DB로부터 읽어온 데이터를 보여준다.
 		ModelAndView result = new ModelAndView();
 		// addObject view에 넘어가는 데이터
-
 		System.out.println(memberList);
-
 		result.setViewName("/member/memberlist"); // 뷰의 jsp 이름
 		result.addObject("result", memberList); // 회원목록
 		result.addObject("count", Integer.valueOf(count)); // 글수
 		result.addObject("currentPage", Integer.valueOf(currentPage)); // 현재페이지
 		result.addObject("pagingHtml", pagingHtml);
 		result.addObject("number", Integer.valueOf(number)); // 전체 페이지
-
 		List<Dept> deptlist = memberDAOService.getDeptlist(); // 부서 종류
 		deptlist.remove(0);
 		result.addObject("deptlist", deptlist);
-
+		result.addObject("before_showdept", showdept); // 이전 페이지 선택옵션
+		result.addObject("before_keyWord", keyWord); // 이전 페이지 선택옵션
+		result.addObject("before_keyField", keyField); // 이전 페이지 선택옵션
 		return result;
 	}
 

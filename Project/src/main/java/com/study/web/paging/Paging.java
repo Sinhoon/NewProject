@@ -7,23 +7,23 @@ public class Paging {
 
 	public Paging(int currentPage, int totalCount, int blockCount,
 			int blockPage, String pageUrl) {
-		this(null, null, currentPage, totalCount, blockCount, blockPage,
+		this(null,null, null, currentPage, totalCount, blockCount, blockPage,
 				pageUrl, null);
 	}
 
 	public Paging(int currentPage, int totalCount, int blockCount,
 			int blockPage, String pageUrl, String addKey) {
-		this(null, null, currentPage, totalCount, blockCount, blockPage,
+		this(null,null, null, currentPage, totalCount, blockCount, blockPage,
 				pageUrl, addKey);
 	}
 
-	public Paging(String keyField, String keyWord, int currentPage,
+	public Paging(String showdept, String keyField, String keyWord, int currentPage,
 			int totalCount, int blockCount, int blockPage, String pageUrl) {
-		this(keyField, keyWord, currentPage, totalCount, blockCount, blockPage,
+		this(showdept,keyField, keyWord, currentPage, totalCount, blockCount, blockPage,
 				pageUrl, null);
 	}
 
-	public Paging(String keyField, String keyWord, int currentPage,
+	public Paging(String dept,String keyField, String keyWord, int currentPage,
 			int totalCount, int blockCount, int blockPage, String pageUrl,
 			String addKey) {
 		if (addKey == null) {
