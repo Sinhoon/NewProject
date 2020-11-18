@@ -39,7 +39,7 @@ if (session.getAttribute("Member") != null) {
 		if (value == "0") {
 			location.href = "${pageContext.request.contextPath}/home";
 		} else if (value == "1") {
-			location.href = "${pageContext.request.contextPath}/board";
+			location.href = "${pageContext.request.contextPath}/boardList";
 		} else if (value == "2") {
 			location.href = "${pageContext.request.contextPath}/memberlist";
 		} else if (value == "3") {

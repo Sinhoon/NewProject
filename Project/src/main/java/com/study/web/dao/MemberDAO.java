@@ -20,4 +20,5 @@ public interface MemberDAO {
 	void unlock(String num);
 	void golock(String num);
 	public void modMember(Member vo);
+	public void rmMember(String unum);
 }

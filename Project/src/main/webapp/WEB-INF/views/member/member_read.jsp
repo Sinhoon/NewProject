@@ -24,6 +24,7 @@
 
 <script>
 $(document).ready(function() {
+	$("#uImgchk").val("");
 	$("#user_num").prop('disabled', false);
 	dactive()
 	/* 회원 수정 */
@@ -33,6 +34,12 @@ $(document).ready(function() {
 	/* 취소 */
 	$("#can_submit").on('click', function() {
 		location.reload();
+	});
+	$("#rm_submit").on('click', function() {
+		rmSubmit();
+	});
+	$("#bef_submit").on('click', function() {
+		window.location.href = "${pageContext.request.contextPath}/memberlist";
 	});
 
 
@@ -45,12 +52,15 @@ $(document).ready(function() {
 		$("#uImg").css('display', '');
 		$("#mod_submit").css('display', 'none');
 		$("#rm_submit").css('display', 'none');
+		$("#pwform").css('display', '');
+		$("#pw2form").css('display', '');
 		$(".check_font").text("");
 	}
 	function dactive(){
 		$(".form-control").prop("disabled",true);
 		$("#user_class").prop('disabled', true);
 		$("#user_dept").prop('disabled', true);
+		$("#before_id").attr("value",'${member.uId}');
 		$("#user_id").attr("value",'${member.uId}');
 		$("#user_pw").attr("value",'${member.uPwd}');
 		$("#user_pw2").attr("value",'${member.uPwd}');
@@ -67,10 +77,37 @@ $(document).ready(function() {
 		$("#rm_submit").css('display', '');
 		$(".check_font").text("");
 	}
+
+	/* 회원 삭제 */		
+	function rmSubmit() {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/rmId.do",
+			type : "POST",
+			async : false,
+			data : {
+				unum : $("#user_num").val()
+			},
+			success : function(data) {
+				console.log(data);
+				if (data.Code == "0000") {
+					window.location.href = "${pageContext.request.contextPath}/memberlist";
+					alert('회원 삭제 완료');
+				}  else {
+					alert("err2");
+				}
+			},
+			error : function() {
+				alert("err1");
+			}
+		});
+	}
+	
 	/* 회원 등록 */		
 	function regSubmit() {
 		var formdata = new FormData(document.getElementById('uploadForm'));
-		console.log(formdata);
+		if ($("#uImgchk").val() == "change"){
+			console.log("change");
+		}
 		$.ajax({
 			url : "${pageContext.request.contextPath}/mId.do",
 			type : "POST",
@@ -82,12 +119,15 @@ $(document).ready(function() {
 				console.log(data);
 				if (data.Code == "0000") {
 					location.reload();
+					alert('회원 수정 완료');
 				}  else {
-					alert("err");
+					location.reload();
+					alert("err2");
 				}
 			},
 			error : function() {
-				alert("err");
+				location.reload();
+				alert("err1");
 			}
 		});
 	}
@@ -104,8 +144,14 @@ $(document).ready(function() {
 				if (data.Code == "0000") {
 					console.log();
 				}  else {
+					if ($("#before_id").val() != $("#user_id").val()){
 					$('#id_check').text('중복아이디 입니다.');
 					$('#id_check').css('color', 'red');
+					}
+					else{
+						$('#id_check').text('');
+					}
+					
 				}
 			},
 			error : function() {
@@ -238,40 +284,39 @@ $('#user_birth').blur(function(){
 // 가입하기 실행 버튼 유효성 검사!
 var inval_Arr = new Array(6).fill(false);
 	$('#ureg_submit').click(function(){
-		console.log("ddddddddddddddddd")
 		// 비밀번호가 같은 경우 && 비밀번호 정규식
 		if (($('#user_pw').val() == ($('#user_pw2').val()))
-				&& pwJ.test($('#user_pw').val())) {
+				&& $('#pw_check').text('') && $('#pw2_check').text('') ) {
 			inval_Arr[0] = true;
 		} else {
 			inval_Arr[0] = false;
 		}
 		// 이름 정규식
-		if (nameJ.test($('#user_name').val())){
+		if ($('#name_check').text('')){
 			inval_Arr[1] = true;	
 		} else {
 			inval_Arr[1] = false;
 		}
 		// 아이디 정규식
-		if (idJ.test($('#user_id').val()) && ($('#id_check').text()=="")  ){
+		if ($('#id_check').text('')){
 			inval_Arr[2] = true;
 		} else {
 			inval_Arr[2] = false;
 		}
 		// 휴대폰번호 정규식
-		if (phoneJ.test($('#user_phone').val())) {
+		if ($('#phone_check').text('')) {
 			inval_Arr[3] = true;
 		} else {
 			inval_Arr[3] = false;
 		}
 		// 생년월일 정규식
-		if (birthJ) {
+		if ($('#birth_check').text('')) {
 			inval_Arr[4] = true;
 		} else {
 			inval_Arr[4] = false;
 		}
 		// 이메일 정규식
-		if (emailJ.test($('#user_email').val())) {
+		if ($('#email_check').text('')) {
 			inval_Arr[5] = true;
 		} else {
 			inval_Arr[5] = false;
@@ -286,7 +331,6 @@ var inval_Arr = new Array(6).fill(false);
 		if(validAll){ // 유효성 모두 통과
 			console.log("ddddddddddddss")
 			regSubmit(); 
-			alert('회원 수정 완료');
 		} else{
 			if ($(".check_font").text() != ""){
 				return false
@@ -307,11 +351,11 @@ var inval_Arr = new Array(6).fill(false);
 		</div>
 		<div class="row mt-5">
 			<div class="col-12">
-				<form method="POST" id="uploadForm" enctype="multipart/form-data">
+				<form method="POST" id="uploadForm" name="uploadForm"
+					enctype="multipart/form-data">
 					<div class="form-group">
-						<input type="text" 
-							 id="user_num" name="user_num" value=${member.uNum}
-							placeholder="번호" style="display:none">
+						<input type="text" id="user_num" name="user_num"
+							value=${member.uNum } placeholder="번호" style="display: none">
 					</div>
 					<!-- 아이디 -->
 					<div class="form-group">
@@ -319,6 +363,8 @@ var inval_Arr = new Array(6).fill(false);
 							class="form-control" id="user_id" name="user_id"
 							placeholder="아이디" required>
 						<div class="check_font" id="id_check"></div>
+						<input type="text" id="before_id" name="before_id"
+							placeholder="아이디" style="display: none">
 					</div>
 					<!-- 비밀번호 -->
 					<div class="form-group" id="pwform">
@@ -381,7 +427,7 @@ var inval_Arr = new Array(6).fill(false);
 						<div class="check_font" id="dept_check"></div>
 					</div>
 					<!-- 직급 -->
-					<div class="form-group required">
+					<div class="form-group required" name="class">
 						<label for="user_class">직급</label> <select id="user_class"
 							name="user_class">
 							<c:forEach items="${classlist}" var="classlist">
@@ -390,7 +436,7 @@ var inval_Arr = new Array(6).fill(false);
 										<option value="${classlist.cNum}" selected="selected">${classlist.cName}</option>
 									</c:when>
 									<c:otherwise>
-										<option value="${dclasslist.cNum}">${classlist.cName}</option>
+										<option value="${classlist.cNum}">${classlist.cName}</option>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
@@ -399,19 +445,32 @@ var inval_Arr = new Array(6).fill(false);
 					</div>
 					<!-- 이미지 -->
 					<label for="uImg">이미지</label> <input type="file" id="uImg"
-						name="upload" />
+						name="upload" /> <input id="uImgchk" name="uImgchk" value=""
+						style="display: none" /> <input id="uImgurl" name="uImgurl"
+						value="${member.uImg}" style="display: none" />
 					<div class="select_img">
 						<img src="/resources/${member.uImg}" />
 					</div>
 				</form>
-				<button type="submit" id="mod_submit" class="btn btn-primary">수정</button>
-				<button type="submit" id="rm_submit" class="btn btn-primary">삭제</button>
-				<button type="submit" id="ureg_submit" class="btn btn-primary">저장</button>
-				<button type="submit" id="can_submit" class="btn btn-primary">취소</button>
+				<%
+					String uNum = meb.getuNum() +"";
+					pageContext.setAttribute("uNum", uNum);
+				%>
+				<c:set var="uClass" value="<%=Integer.parseInt(meb.getuClass())%>"></c:set>
+				<button type="submit" id="bef_submit" class="btn btn-primary">목록</button>
+				<c:if test="${uClass <2  ||( member.uNum == uNum )}">
+					<button type="submit" id="mod_submit" class="btn btn-primary">수정</button>
+					<button type="submit" id="ureg_submit" class="btn btn-primary">저장</button>
+					<button type="submit" id="can_submit" class="btn btn-primary">취소</button>
+				</c:if>
+				<c:if test="${uClass < member.uClass }">
+				 <button type="submit" id="rm_submit" class="btn btn-primary">삭제</button>
+				</c:if>
 				<script>
 					  $("#uImg").change(function(){
 					   if(this.files && this.files[0]) {
-					    var reader = new FileReader;
+						$("#uImgchk").val("change");
+					    var reader = new FileReader;	
 					    reader.onload = function(data) {
 					     $(".select_img img").attr("src", data.target.result).width(500);        
 					    }
@@ -425,7 +484,7 @@ var inval_Arr = new Array(6).fill(false);
 						    reader.onload = function(data) {
 						     $(".select_img img").attr("src", data.target.result).width(500);        
 						    }
-						    reader.readAsDataURL(this.files[0]);
+						    reader.readAsDataURL($("#uImg").files[0]);
 						   }
 						  }); */
 					 </script>

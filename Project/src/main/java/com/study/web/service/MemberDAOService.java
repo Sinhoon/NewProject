@@ -82,8 +82,25 @@ public class MemberDAOService implements MemberDAO {
 		sqlSession.update("member_updateProc", map);		
 	}
 
-	
+	@Override
 	public void modMember(Member vo) {
+		System.out.println("수정");
+		System.out.println(vo.getuImg());
+		System.out.println(vo.getuPwd());
+		System.out.println(vo.getuPhone());
+		System.out.println(vo.getuEmail());
+		System.out.println(vo.getuImg());
+		System.out.println(vo.getuBirth());
+		System.out.println(vo.getuName());
+		System.out.println(vo.getuDept());
+		System.out.println(vo.getuClass());
+		System.out.println(vo.getuNum());
+		System.out.println("수정");
 		sqlSession.update("modMember", vo);		
+	}
+
+	@Override
+	public void rmMember(String unum) {	
+		sqlSession.delete("rmMember", unum);
 	}
 }

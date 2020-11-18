@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -73,19 +74,43 @@ public class MemberController {
 		return result;
 	}
 
+	// 회원 삭제
+		@ResponseBody
+		@RequestMapping(value = "/rmId.do", method = RequestMethod.POST)
+		public HashMap<String, String> rmid(HttpServletRequest request) throws Exception {
+			HashMap<String, String> result = new HashMap<String, String>();
+			String unum = request.getParameter("unum");
+			try {
+				memberDAOService.rmMember(unum);
+			} catch (Exception e) {
+				result.put("Code", "0001");
+				return result;
+			}
+			result.put("Code", "0000");
+			return result;
+		}
+		
 	// 회원 등록
+	@Autowired ServletContext servletContext;
 	@ResponseBody
 	@RequestMapping(value = "/rId.do", method = RequestMethod.POST)
 	public HashMap<String, String> rId(Locale locale, Model model,MultipartHttpServletRequest multipartRequest,HttpSession session) throws IOException {
 		HashMap<String, String> result = new HashMap<String, String>();
 		Member vo = new Member();
+		System.out.println(multipartRequest.getParameter("uImgchk"));
+		Member vo2 =  (Member) session.getAttribute("Member");
+		String replaceName = multipartRequest.getParameter("uImgurl");
+		if (multipartRequest.getParameter("uImgchk").equals("change")) {
+		System.out.println("change-----------------------------");
 		MultipartFile file = multipartRequest.getFile("upload");
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance();	
 		String fileName = file.getOriginalFilename();
 		String fileType = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-		String replaceName = cal.getTimeInMillis() + fileType;
-		String path = "c://image";
+		replaceName = cal.getTimeInMillis() + fileType;
+		String path = servletContext.getRealPath("/resources");
+		System.out.println(path);
 		FileUpload.fileUpload(file, path, replaceName);
+		}
 		System.out.println(multipartRequest.getParameter("user_dept"));
 		vo.setuName(multipartRequest.getParameter("user_name"));
 		vo.setuId(multipartRequest.getParameter("user_id"));
@@ -107,20 +132,26 @@ public class MemberController {
 		return result;
 	}
 
-
-
 	@ResponseBody
 	@RequestMapping(value = "/mId.do", method = RequestMethod.POST)
 	public HashMap<String, String> mId(Locale locale, Model model,MultipartHttpServletRequest multipartRequest,HttpSession session) throws IOException {
 		HashMap<String, String> result = new HashMap<String, String>();
 		Member vo = new Member();
+		System.out.println(multipartRequest.getParameter("uImgchk"));
+		Member vo2 =  (Member) session.getAttribute("Member");
+		String replaceName = multipartRequest.getParameter("uImgurl");
+		if (multipartRequest.getParameter("uImgchk").equals("change")) {
+		System.out.println("change-----------------------------");
 		MultipartFile file = multipartRequest.getFile("upload");
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance();	
 		String fileName = file.getOriginalFilename();
 		String fileType = fileName.substring(fileName.lastIndexOf("."), fileName.length());
-		String replaceName = cal.getTimeInMillis() + fileType;
-		String path = "c://image";
+		replaceName = cal.getTimeInMillis() + fileType;
+		String path = servletContext.getRealPath("/resources");
+		System.out.println(path);
+
 		FileUpload.fileUpload(file, path, replaceName);
+		}
 		System.out.println(multipartRequest.getParameter("user_dept"));
 		vo.setuNum(Integer.parseInt(multipartRequest.getParameter("user_num")));
 		vo.setuName(multipartRequest.getParameter("user_name"));

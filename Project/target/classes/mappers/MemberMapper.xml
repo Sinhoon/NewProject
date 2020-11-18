@@ -6,88 +6,101 @@
 <mapper namespace="com.study.web.mapper.MemberMapper">
 
 
-    <!-- id의 경우에는 Mapper.java에 동일하게 사용해야된다. -->
+	<!-- id의 경우에는 Mapper.java에 동일하게 사용해야된다. -->
 
-       <!-- 회원목록 기본 -->  
-       <!-- 페이징을 받기위해 리절트타입으로 변경하였습니다. -->  
-       
+	<!-- 회원목록 기본 -->
+	<!-- 페이징을 받기위해 리절트타입으로 변경하였습니다. -->
 
-    	<!-- MySQL이라 오라클이랑은좀 다릅니다 -->
-        <select id="memberList" resultType="com.study.web.vo.Member" parameterType="map">
-   		SELECT R1.* FROM ( SELECT * FROM User  <if test=" showdept != '0'.toString() ">WHERE uDept = #{showdept} </if>
-   		<if test=" showdept == '0'.toString() ">WHERE uDept = uDept </if>
-   		
-   		<if test="keyWord != '' "> 
-   		<!-- 검색 쿼리 추가하였습니다.-->
-   		<if test="keyField == 'all'"> AND  uId like CONCAT('%',#{keyWord},'%') OR
-   									   		uName like CONCAT('%',#{keyWord},'%') </if> <!-- 검색 조건이 전체일때 -->
-   									
-   		<if test="keyField == 'uName'"> AND  uName like CONCAT('%',#{keyWord},'%')</if> <!-- 이름 검색 -->
-   		<if test="keyField == 'uId'"> AND uId like CONCAT('%',#{keyWord},'%')</if>	<!-- ID 검색 -->	   
-   			
-   		</if>
-			  			ORDER BY uClass ASC, uNum DESC ) R1
-			  			
-   			  			LIMIT #{start}, #{end} 	 
- 		 </select> 
-    
-    
-  
-    <!-- 페이징 처리를 위한 컬럼 갯수 새기 -->
-    <select resultType="Integer" parameterType="map" id="Count"> 
-     SELECT COUNT(*) FROM user  <if test=" showdept != '0'.toString() ">WHERE uDept = #{showdept} </if> 
-   
-    </select>
-	
-	
-	<select resultType="com.study.web.vo.Member" parameterType="int" id="member_read"> 
-	SELECT * FROM User  
-	WHERE uNum = #{uNum} 
+
+	<!-- MySQL이라 오라클이랑은좀 다릅니다 -->
+	<select id="memberList" resultType="com.study.web.vo.Member"
+		parameterType="map">
+		SELECT R1.* FROM ( SELECT * FROM User
+		<if test=" showdept != '0'.toString() ">WHERE uDept = #{showdept} </if>
+		<if test=" showdept == '0'.toString() ">WHERE uDept = uDept </if>
+
+		<if test="keyWord != '' ">
+			<!-- 검색 쿼리 추가하였습니다. -->
+			<if test="keyField == 'all'"> AND uId like CONCAT('%',#{keyWord},'%') OR
+				uName like CONCAT('%',#{keyWord},'%') </if> <!-- 검색 조건이 전체일때 -->
+
+			<if test="keyField == 'uName'"> AND uName like CONCAT('%',#{keyWord},'%')</if> <!-- 이름 검색 -->
+			<if test="keyField == 'uId'"> AND uId like CONCAT('%',#{keyWord},'%')</if>	<!-- ID 검색 -->
+
+		</if>
+		ORDER BY uClass ASC, uNum DESC ) R1
+
+		LIMIT #{start}, #{end}
 	</select>
-	
+
+
+
+	<!-- 페이징 처리를 위한 컬럼 갯수 새기 -->
+	<select resultType="Integer" parameterType="map" id="Count">
+		SELECT COUNT(*) FROM user
+		<if test=" showdept != '0'.toString() ">WHERE uDept = #{showdept} </if>
+
+	</select>
+
+
+	<select resultType="com.study.web.vo.Member" parameterType="int"
+		id="member_read">
+		SELECT * FROM User
+		WHERE uNum = #{uNum}
+	</select>
+
 	<!-- 중복아이디 체크 -->
-	<select resultType="com.study.web.vo.Member" parameterType="string" id="Idchk"> 
-	SELECT * FROM User  
-	WHERE uId = #{uId} 
+	<select resultType="com.study.web.vo.Member"
+		parameterType="string" id="Idchk">
+		SELECT * FROM User
+		WHERE uId = #{uId}
 	</select>
-	
+
 	<!-- 권한 리스트 -->
-	<select resultType="hashmap"  id="getClasslist"> 
-	SELECT * FROM CLASS  
+	<select resultType="hashmap" id="getClasslist">
+		SELECT * FROM CLASS
 	</select>
-	
+
 	<!-- 부서 리스트 -->
-	<select resultType="hashmap"  id="getDeptlist"> 
-	SELECT * FROM DEPT  
+	<select resultType="hashmap" id="getDeptlist">
+		SELECT * FROM DEPT
 	</select>
- 
-    <!-- 회원 등록 -->
-    <insert id="regMember" parameterType="com.study.web.vo.Member">
-    INSERT INTO USER(uDept,uClass,uName,uId,uPwd,uBirth,uPhone,uEmail,uImg)
-	VALUE (CAST(#{uDept} as unsigned),CAST(#{uClass} as unsigned),#{uName},#{uId},#{uPwd},#{uBirth},#{uPhone},#{uEmail},#{uImg});
-    </insert>
-    
-    <!-- 락 해체 -->
-    <update id="unlock" parameterType="string">
-    UPDATE user SET uLock = 0 
-    WHERE uNum = CAST(#{uNum} as unsigned)
-    </update>
-    
-    <!-- 락 설정 -->
-    <update id="golock" parameterType="string">
-    UPDATE user SET uLock = 5
-    WHERE uNum = CAST(#{uNum} as unsigned)
-    </update>
-    
-    <!-- 회원 수정 -->
-    <update parameterType="com.study.web.vo.Member"  id="modMember" > 
- 	UPDATE User 
- 	SET uPhone= #{uPhone}, uDept=#{uDept} ,
-	uName= #{uName}, uPwd =#{uPwd} ,
-	uClass= #{uClass}, uBirth=#{uBirth} ,
-	uEmail= #{uEmail}, uImg=#{uImg}
- 	WHERE uNum = #{uNum} 
- 	</update>
- 	
- 	
+
+	<!-- 회원 등록 -->
+	<insert id="regMember" parameterType="com.study.web.vo.Member">
+		INSERT INTO USER(uDept,uClass,uName,uId,uPwd,uBirth,uPhone,uEmail,uImg)
+		VALUE (CAST(#{uDept} as unsigned),CAST(#{uClass} as
+		unsigned),#{uName},#{uId},#{uPwd},#{uBirth},#{uPhone},#{uEmail},#{uImg});
+	</insert>
+
+	<!-- 락 해체 -->
+	<update id="unlock" parameterType="string">
+		UPDATE user SET uLock = 0
+		WHERE uNum = CAST(#{uNum} as unsigned)
+	</update>
+
+	<!-- 락 설정 -->
+	<update id="golock" parameterType="string">
+		UPDATE user SET uLock = 5
+		WHERE uNum = CAST(#{uNum} as unsigned)
+	</update>
+
+	<!-- 회원 수정 -->
+	<update parameterType="com.study.web.vo.Member" id="modMember">
+		UPDATE User
+		SET uPhone= #{uPhone}, uDept=#{uDept} ,
+		uName= #{uName}, uPwd =#{uPwd} ,
+		uClass= #{uClass}, uBirth=#{uBirth} ,
+		uEmail= #{uEmail}, uImg=#{uImg}
+		WHERE uNum = #{uNum}
+	</update>
+
+
+	<!-- 회원 삭제 -->
+	<delete parameterType="string" id="rmMember">
+		DELETE FROM User
+		WHERE uNum = #{uNum}
+	</delete>
+
+
 </mapper>	

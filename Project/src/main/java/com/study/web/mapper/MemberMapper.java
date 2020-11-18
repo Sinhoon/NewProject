@@ -16,5 +16,6 @@ public interface MemberMapper {
     void golock(String num);
     void unlock(String num);
     void modMember(Member vo);
+    void rmMember(String unum);
 }
 

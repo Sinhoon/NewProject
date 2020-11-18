@@ -59,9 +59,9 @@ public class MemberlistController {
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		HashMap<String, Object> map = new HashMap(); // 페이지넘버, 키필드, 키워드 가져와서 해쉬 맵에 저장
 		Member mav = (Member) session.getAttribute("Member");
-		String sDept = mav.getuClass();	
+		String sDept = mav.getuDept();	
 		if (showdept.equals("")) {
-			showdept = mav.getuClass();
+			showdept = mav.getuDept();
 		}
 
 		map.put("showdept", showdept); // 부서 선택
@@ -126,7 +126,7 @@ public class MemberlistController {
 		classlist.remove(0);
 		deptlist.remove(0);
 		ModelAndView mav = new ModelAndView();
-		
+		member.setuBirth(member.getuBirth().replace("-", ""));
 		mav.addObject("member", member);
 		mav.addObject("classlist", classlist);
 		mav.addObject("deptlist", deptlist);

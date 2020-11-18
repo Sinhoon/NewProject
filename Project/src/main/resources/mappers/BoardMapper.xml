@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.web.mapper.BoardMapper">
+
+    <resultMap type="Board" id="BoardResultMap">
+        <result property="num" column="bNum" />
+        <result property="dept" column="bDept" />
+        <result property="content" column="bContent" />
+        <result property="file" column="bFile" />
+        <result property="title" column="bTitle" />
+        <result property="reguser" column="bReguser" />
+        <result property="regdate" column="bRegdate" />
+        <result property="moduser" column="bModuser" />
+        <result property="moddate" column="bModdate" />
+    </resultMap>
+    
+    <resultMap type="Member" id="MemberResultMap">
+        <result property="unum" column="uNum" />
+        <result property="udept" column="uDept" />
+        <result property="uclass" column="uClass" />
+        <result property="uname" column="uName" />
+        <result property="uid" column="uId" />
+        <result property="upwd" column="uPwd" />
+        <result property="ubirth" column="uBirth" />
+        <result property="uphone" column="uPhone" />
+        <result property="uemail" column="uEmail" />
+        <result property="uimg" column="uImg" />
+        <result property="ureguser" column="uReguser" />
+        <result property="uregdate" column="uRegdate" />
+        <result property="umoduser" column="uModuser" />
+        <result property="umoddate" column="uModdate" />
+        <result property="ulock" column="uLock" />
+    </resultMap>
+    <!-- id의 경우에는 Mapper.java에 동일하게 사용해야된다. -->
+
+       <!-- 회원목록 기본 -->  
+       <!-- 페이징을 받기위해 리절트타입으로 변경하였습니다. -->  
+       
+
+    	<!-- MySQL이라 오라클이랑은좀 다릅니다 -->
+        <select id="board_list" resultType="com.study.web.vo.Board" parameterType="map">
+   		SELECT * 
+   		FROM board 
+   		
+
+ 		 </select> 
+    
+    
+    
+  
+    <!-- 페이징 처리를 위한 컬럼 갯수 새기 -->
+    <select resultType="Integer" parameterType="map" id="boardCount"> 
+     SELECT COUNT(*) FROM board 
+   
+    </select>
+	
+	
+	<select resultType="com.study.web.vo.Board" parameterType="int" id="board_read"> 
+	SELECT * FROM Board  
+	WHERE bNum = #{bNum} 
+	</select>
+ 
+</mapper>

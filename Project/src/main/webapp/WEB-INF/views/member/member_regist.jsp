@@ -27,7 +27,9 @@ $(document).ready(function() {
 	/* 회원 등록 */
 	function regSubmit() {
 		var formdata = new FormData(document.getElementById('uploadForm'));
-		console.log(formdata);
+		if ($("#uImgchk").val() == "change"){
+			console.log("change");
+		}
 		$.ajax({
 			url : "${pageContext.request.contextPath}/rId.do",
 			type : "POST",
@@ -267,7 +269,7 @@ var inval_Arr = new Array(6).fill(false);
 					<div class="form-group">
 						<label for="user_id">아이디</label> <input type="text"
 							class="form-control" id="user_id" name="user_id"
-							placeholder="아이디"  required>
+							placeholder="아이디" required>
 						<div class="check_font" id="id_check"></div>
 					</div>
 					<!-- 비밀번호 -->
@@ -288,7 +290,7 @@ var inval_Arr = new Array(6).fill(false);
 					<div class="form-group">
 						<label for="user_name">이름</label> <input type="text"
 							class="form-control" id="user_name" name="user_name"
-							placeholder="이름"  required>
+							placeholder="이름" required>
 						<div class="check_font" id="name_check"></div>
 					</div>
 					<!-- 생년월일 -->
@@ -334,7 +336,9 @@ var inval_Arr = new Array(6).fill(false);
 					</div>
 					<!-- 이미지 -->
 					<label for="uImg">이미지</label> <input type="file" id="uImg"
-						name="upload" />
+						name="upload" /> <input id="uImgchk" name="uImgchk" value=""
+						style="display: none" /> <input id="uImgurl" name="uImgurl"
+						value="basic.JPG" style="display:none"/>
 					<div class="select_img">
 						<img src="" />
 					</div>
@@ -343,6 +347,7 @@ var inval_Arr = new Array(6).fill(false);
 				<script>
 					  $("#uImg").change(function(){
 					   if(this.files && this.files[0]) {
+						$("#uImgchk").val("change");
 					    var reader = new FileReader;
 					    reader.onload = function(data) {
 					     $(".select_img img").attr("src", data.target.result).width(500);       
