@@ -96,7 +96,8 @@ public class MemberDAOService implements MemberDAO {
 		System.out.println(vo.getuClass());
 		System.out.println(vo.getuNum());
 		System.out.println("¼öÁ¤");
-		sqlSession.update("modMember", vo);		
+		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
+		memberMapper.modMember(vo);	
 	}
 
 	@Override

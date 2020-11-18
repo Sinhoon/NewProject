@@ -409,13 +409,17 @@ var inval_Arr = new Array(6).fill(false);
 						<div class="check_font" id="email_check"></div>
 					</div>
 					<!-- 부서 -->
-
+					<fmt:parseNumber var="uuClass" type="number"
+						value="${member.uClass}" />
+					<fmt:parseNumber var="uuDept" type="number" 
+					   value="${member.uDept}" />
+					   
 					<div class="form-group required" name="dept">
 						<label for="user_dept">부서</label> <select id="user_dept"
 							name="user_dept">
 							<c:forEach items="${deptlist}" var="deptlist">
 								<c:choose>
-									<c:when test="${deptlist.dNum = member.uDept}">
+									<c:when test="${deptlist.dNum == uuDept}">
 										<option value="${deptlist.dNum}" selected="selected">${deptlist.dName}</option>
 									</c:when>
 									<c:otherwise>
@@ -427,12 +431,14 @@ var inval_Arr = new Array(6).fill(false);
 						<div class="check_font" id="dept_check"></div>
 					</div>
 					<!-- 직급 -->
+
+
 					<div class="form-group required" name="class">
 						<label for="user_class">직급</label> <select id="user_class"
 							name="user_class">
 							<c:forEach items="${classlist}" var="classlist">
 								<c:choose>
-									<c:when test="${classlist.cNum = member.uClass}">
+									<c:when test="${classlist.cNum == uuClass}">
 										<option value="${classlist.cNum}" selected="selected">${classlist.cName}</option>
 									</c:when>
 									<c:otherwise>
@@ -453,7 +459,7 @@ var inval_Arr = new Array(6).fill(false);
 					</div>
 				</form>
 				<%
-					String uNum = meb.getuNum() +"";
+					String uNum = meb.getuNum() + "";
 					pageContext.setAttribute("uNum", uNum);
 				%>
 				<c:set var="uClass" value="<%=Integer.parseInt(meb.getuClass())%>"></c:set>
@@ -464,7 +470,7 @@ var inval_Arr = new Array(6).fill(false);
 					<button type="submit" id="can_submit" class="btn btn-primary">취소</button>
 				</c:if>
 				<c:if test="${uClass < member.uClass }">
-				 <button type="submit" id="rm_submit" class="btn btn-primary">삭제</button>
+					<button type="submit" id="rm_submit" class="btn btn-primary">삭제</button>
 				</c:if>
 				<script>
 					  $("#uImg").change(function(){

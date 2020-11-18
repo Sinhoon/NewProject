@@ -22,7 +22,8 @@
 		<if test="keyWord != '' ">
 			<!-- 검색 쿼리 추가하였습니다. -->
 			<if test="keyField == 'all'"> AND uId like CONCAT('%',#{keyWord},'%') OR
-				uName like CONCAT('%',#{keyWord},'%') </if> <!-- 검색 조건이 전체일때 -->
+				uName like
+				CONCAT('%',#{keyWord},'%') </if> <!-- 검색 조건이 전체일때 -->
 
 			<if test="keyField == 'uName'"> AND uName like CONCAT('%',#{keyWord},'%')</if> <!-- 이름 검색 -->
 			<if test="keyField == 'uId'"> AND uId like CONCAT('%',#{keyWord},'%')</if>	<!-- ID 검색 -->
@@ -68,8 +69,10 @@
 
 	<!-- 회원 등록 -->
 	<insert id="regMember" parameterType="com.study.web.vo.Member">
-		INSERT INTO USER(uDept,uClass,uName,uId,uPwd,uBirth,uPhone,uEmail,uImg)
-		VALUE (CAST(#{uDept} as unsigned),CAST(#{uClass} as
+		INSERT INTO
+		USER(uDept,uClass,uName,uId,uPwd,uBirth,uPhone,uEmail,uImg)
+		VALUE
+		(CAST(#{uDept} as unsigned),CAST(#{uClass} as
 		unsigned),#{uName},#{uId},#{uPwd},#{uBirth},#{uPhone},#{uEmail},#{uImg});
 	</insert>
 
@@ -88,10 +91,13 @@
 	<!-- 회원 수정 -->
 	<update parameterType="com.study.web.vo.Member" id="modMember">
 		UPDATE User
-		SET uPhone= #{uPhone}, uDept=#{uDept} ,
-		uName= #{uName}, uPwd =#{uPwd} ,
-		uClass= #{uClass}, uBirth=#{uBirth} ,
-		uEmail= #{uEmail}, uImg=#{uImg}
+		SET uPhone= #{uPhone}, 
+		uDept= (CAST(#{uDept} as unsigned)),
+		uName=#{uName}, uPwd =#{uPwd} ,
+		uClass= (CAST(#{uClass} as unsigned)),
+		uBirth=#{uBirth} ,
+		uEmail= #{uEmail}, 
+		uImg=#{uImg}
 		WHERE uNum = #{uNum}
 	</update>
 
@@ -99,7 +105,8 @@
 	<!-- 회원 삭제 -->
 	<delete parameterType="string" id="rmMember">
 		DELETE FROM User
-		WHERE uNum = #{uNum}
+		WHERE uNum =
+		#{uNum}
 	</delete>
 
 
