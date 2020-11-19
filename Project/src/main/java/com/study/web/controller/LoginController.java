@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.study.web.dao.LoginDAO;
 import com.study.web.dao.MemberDAO;
@@ -33,7 +34,6 @@ public class LoginController {
 	private LoginDAO loginDAOService;
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-	
 	// 로그인 실행
 	@ResponseBody
 	@RequestMapping(value = "/loginPro.do", method = RequestMethod.POST)
@@ -51,9 +51,14 @@ public class LoginController {
 					loginDAOService.setLock(chkld.getuId());
 					result.put("Code", "0003");
 				} else {
-					System.out.println(chkpwd.getuLock());
 					session.setAttribute("Member", chkpwd);
+					String time = (System.currentTimeMillis() + 100000 + "");
+					Double settime = Double.parseDouble(time);
+					System.out.println(settime);
+					session.setAttribute("Time", settime);
+					// session.setMaxInactiveInterval(10);
 					result.put("Code", "0000");
+					// result.put("Time", System.currentTimeMillis()+1000+"");
 				}
 			} else {
 				result.put("Code", "0002");
@@ -69,5 +74,13 @@ public class LoginController {
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/login";
+	}
+
+
+	// 세션갱신
+	@RequestMapping(value = "/timeReset", method = RequestMethod.GET)
+	public String timeReset(HttpServletRequest request,HttpSession session) {
+		session.setAttribute("Time", Double.parseDouble(System.currentTimeMillis() + 100000 + ""));
+		return "redirect:"+ request.getParameter("page") ;
 	}
 }

@@ -5,11 +5,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="1.page.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 <%@include file="../common/header.jsp"%>
 <title>회원목록</title>
+<style>
+
+
+</style>
 </head>
 <script>
 	$(document).ready(function() {
+		
 		$(".lock_btn").on('click', function() {
 			var temp = this;
 			lockChk(temp);
@@ -232,6 +239,8 @@
 		<input type="button" value="회원등록"
 			onClick="location.href='${pageContext.request.contextPath}/member_regist'">
 	</c:if>
+
+
 
 
 </body>

@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="com.study.web.vo.Member"%>
+<%@ page import="java.util.Date"%>
+
+
 <%@ page session="true"%>
 
 <!DOCTYPE html>
@@ -15,9 +18,13 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 <%
 	Member meb = new Member();
-if (session.getAttribute("Member") != null) {
-	meb = (Member) session.getAttribute("Member"); // 세션안에 멤버 
-} else { // meb.getClass(); 0이면 총괄
+	Double tim = 0.0;
+	if (session.getAttribute("Member") != null) {
+		tim = (Double) session.getAttribute("Time");
+	}
+	if (session.getAttribute("Member") != null) {
+		meb = (Member) session.getAttribute("Member");
+	} else { // meb.getClass(); 0이면 총괄
 %>
 <script>
 	window.location = "${pageContext.request.contextPath}/login";
@@ -26,15 +33,31 @@ if (session.getAttribute("Member") != null) {
 	}
 %>
 
-
 <script type="text/javascript">
 	function expireSession() {
+		$("#stime").val("");
 		window.location = "${pageContext.request.contextPath}/login";
+		alert("세션 만료");
 	}
-	setTimeout('expireSession()',
-<%=request.getSession().getMaxInactiveInterval() * 2000%>
-	// 세션유지시간
-	);
+
+	function sessout() {
+		var alltime = new Date(<%=tim%> - new Date().getTime());	
+		$("#stime").val(alltime.getUTCMinutes() +"분" + alltime.getUTCSeconds() +"초");
+		if(<%=tim%> <= (new Date().getTime()) ){
+			$("#logout_btn").click();
+			expireSession();
+		}
+	};
+	
+	window.onload = 
+		function() {
+			sessout();
+		};
+
+	window.setInterval(function() {
+		sessout();
+		}, 1000);
+
 	function changeView(value) {
 		if (value == "0") {
 			location.href = "${pageContext.request.contextPath}/home";
@@ -44,8 +67,11 @@ if (session.getAttribute("Member") != null) {
 			location.href = "${pageContext.request.contextPath}/memberlist";
 		} else if (value == "3") {
 			location.href = "${pageContext.request.contextPath}/logout";
+		} else if (value == "4") {
+			location.href = "${pageContext.request.contextPath}/timeReset?page="+window.location.href;
 		}
-	}
+	}	
+
 </script>
 
 </head>
@@ -65,12 +91,17 @@ if (session.getAttribute("Member") != null) {
 				<li class="nav-item"><a class="nav-link"
 					onclick="changeView(2)">회원관리</a></li>
 				<li class="nav-item"><a class="nav-link"
-					onclick="changeView(3)">로그아웃</a></li>
+					onclick="changeView(3)" id="logout_btn">로그아웃</a></li>
 			</ul>
 		</div>
 		<h7 style="color:white"> <%=meb.getuName()%> 님 안녕하세요 </h7>
+		<!--  세션 타임 -->
 	</nav>
 
+	<div>
+		<input id="stime" value="">
+		<button id="timeReset" value="reset" onclick="changeView(4)">리셋</button>
+	</div>	
 
 </body>
 </html>
