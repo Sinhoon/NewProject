@@ -48,10 +48,10 @@ public class Paging {
 
 		if (currentPage > blockPage) {
 			if (keyWord == null) {
-				this.pagingHtml.append("<a href=" + pageUrl + "?pageNum="
+				this.pagingHtml.append("<a class='page-item item' href=" + pageUrl + "?pageNum="
 						+ (startPage - 1) + addKey + ">");
 			} else {
-				this.pagingHtml.append("<a href=" + pageUrl + "?keyField="
+				this.pagingHtml.append("<a class='page-item item' href=" + pageUrl + "?keyField="
 						+ keyField + "&keyWord=" + keyWord + "&pageNum="
 						+ (startPage - 1) + addKey + " style='text-decoration: none;'>");
 			}
@@ -65,20 +65,20 @@ public class Paging {
 				break;
 			}
 			if (i == currentPage) {
-				this.pagingHtml.append("&nbsp;<b> <font color='red'>");
+				this.pagingHtml.append("&nbsp;<a class='page-item item'><b> <font color='red'>");
 				this.pagingHtml.append(i);
-				this.pagingHtml.append("</font></b>");
+				this.pagingHtml.append("</font></b></a>");
 			} else {
 				if (keyWord == null) {
-					this.pagingHtml.append("&nbsp;<a href='" + pageUrl
+					this.pagingHtml.append("&nbsp;<a class='page-item item' href='" + pageUrl
 							+ "?pageNum=");
 				} else {
-					this.pagingHtml.append("&nbsp;<a href='" + pageUrl
+					this.pagingHtml.append("&nbsp;<a class='page-item item' href='" + pageUrl
 							+ "?keyField=" + keyField + "&keyWord=" + keyWord
 							+ "&pageNum=");
 				}
 				this.pagingHtml.append(i);
-				this.pagingHtml.append(addKey + "'style='text-decoration: none; font-size:12px;'>");
+				this.pagingHtml.append(addKey + "'style='text-decoration: none; '>");
 				this.pagingHtml.append(i);
 				this.pagingHtml.append("</a>");
 			}
@@ -87,10 +87,10 @@ public class Paging {
 		this.pagingHtml.append("&nbsp;&nbsp;&nbsp;&nbsp;");
 		if (totalPage - startPage >= blockPage) {
 			if (keyWord == null) {
-				this.pagingHtml.append("<a href=" + pageUrl + "?pageNum="
+				this.pagingHtml.append("<a class='page-item item' href=" + pageUrl + "?pageNum="
 						+ (endPage + 1) + addKey + ">");
 			} else {
-				this.pagingHtml.append("<a href=" + pageUrl + "?keyField="
+				this.pagingHtml.append("<a class='page-item item' href=" + pageUrl + "?keyField="
 						+ keyField + "&keyWord=" + keyWord + "&pageNum="
 						+ (endPage + 1) + addKey +" style='text-decoration: none;'>");
 			}

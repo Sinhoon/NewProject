@@ -40,27 +40,99 @@
        <!-- 페이징을 받기위해 리절트타입으로 변경하였습니다. -->  
        
 
-    	<!-- MySQL이라 오라클이랑은좀 다릅니다 -->
+<!-- 게시판 목록 -->
         <select id="board_list" resultType="com.study.web.vo.Board" parameterType="map">
-   		SELECT * 
-   		FROM board 
+   		SELECT R1.* 
+   		FROM ( 
+   		SELECT * FROM Board 
    		
+   		 		   <!-- 검색 쿼리 추가하였습니다.-->
+   		   
+   		<if test="keyField == 'all'"> WHERE bTitle like CONCAT('%',#{keyWord},'%') AND
+   									   		bRegUser like CONCAT('%',#{keyWord},'%')
+   									   		
+   									   		 <if test="keyDept != 0">
+   									   		AND
+   									   		bDept like CONCAT('%',#{keyDept},'%')
+   									   		</if>
+   									   		</if> <!-- 검색 조건이 전체일때 -->
+   									
+   		<if test="keyField == 'bTitle'"> WHERE bTitle like CONCAT('%',#{keyWord},'%')		 
+   											<if test="keyDept != 0">
+   									   		AND
+   									   		bDept like CONCAT('%',#{keyDept},'%')
+   									   		</if>
+   												</if> <!-- 이름 검색 -->
+   		
+   		<if test="keyField == 'bReguser'"> WHERE bRegUser like CONCAT('%',#{keyWord},'%')
+   											 <if test="keyDept != 0">
+   									   		AND
+   									   		bDept like CONCAT('%',#{keyDept},'%')
+   									   		</if>
+   											</if>	<!-- ID 검색 -->	   
+			  			ORDER BY bNum DESC ) R1
+			  			
+   			  			LIMIT #{start}, #{end}
+    
+       		 </select> 
+    
 
- 		 </select> 
-    
-    
+    <!-- 공지 목록 -->
+        <select id="notice_list" resultType="com.study.web.vo.Board" parameterType="map">
+         SELECT R1.* 
+         FROM ( 
+         SELECT * FROM Board 
+         WHERE 
+         <if test="keyDept != 0">
+                                    (bDept like CONCAT(0)
+                                       OR
+                                       bDept like CONCAT('%',#{keyDept},'%'))
+                                       AND</if>
+                                       
+                                       (bKind like CONCAT(0) OR bKind like CONCAT(1))   
+
+         ORDER BY bKind ASC, bNum DESC) R1
+   		 </select> 
     
   
     <!-- 페이징 처리를 위한 컬럼 갯수 새기 -->
     <select resultType="Integer" parameterType="map" id="boardCount"> 
      SELECT COUNT(*) FROM board 
-   
+   <if test="keyDept != 0">
+   	WHERE 		bDept like CONCAT('%',#{keyDept},'%')</if>
     </select>
 	
-	
+	<!-- 게시판 글 읽기 -->
 	<select resultType="com.study.web.vo.Board" parameterType="int" id="board_read"> 
 	SELECT * FROM Board  
 	WHERE bNum = #{bNum} 
 	</select>
+	
+	<!-- 게시판 글 작성 -->
+	<insert id="board_write">
+		INSERT INTO BOARD (bDept, bKind, bContent, bFile,
+		bTitle, bReguser, bRegname)
+		VALUES (#{bDept}, #{bKind}, #{bContent}, #{bFile},
+		#{bTitle}, #{bReguser}, #{bRegname})
+	</insert>
+	
+		<!-- 게시판 글 수정 -->
+	<update id="board_update" parameterType="com.study.web.vo.Board">
+		UPDATE BOARD
+		SET bTitle = #{bTitle},
+		bContent = #{bContent},
+		bKind = #{bKind},
+		bModuser = #{bModuser},
+		bModname = #{bModname},
+		bModdate = NOW()
+		WHERE bNum = #{bNum}
+	</update>
+
+	<!-- 게시판 글 삭제 -->
+	<delete id="board_delete" parameterType="int">
+		DELETE
+		FROM BOARD
+		WHERE bNum = #{bNum}
+	</delete>
  
 </mapper>

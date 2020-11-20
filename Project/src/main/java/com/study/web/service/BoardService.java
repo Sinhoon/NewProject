@@ -12,21 +12,33 @@ import org.springframework.transaction.annotation.Transactional;
 import com.study.web.dao.BoardDAO;
 import com.study.web.vo.Board;
 
-//Service Å¬·¡½º¸¦ Repository·Î µî·ÏÇÔÀ¸·Î¼­ ºó(bean) Å¬·¡½º·Î »ç¿ëÇÏ´ÉÇÏ°ÔÇÑ´Ù. 
+//Service Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Repositoryï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¼ï¿½ ï¿½ï¿½(bean) Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½Ï°ï¿½ï¿½Ñ´ï¿½. 
 @Repository
 public class BoardService implements BoardDAO {
 
-	// Autowired¸¦ »ç¿ëÇÏ¿© sqlSessionÀ» »ç¿ëÇÒ¼ö ÀÖ´Ù.
+	// Autowiredï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ sqlSessionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ ï¿½Ö´ï¿½.
 	@Autowired
 	private SqlSession sqlSession;
 
+
+	   
 	@Override
-	public List<Board> board_list() throws Exception {
-		List<Board> list = sqlSession.selectList("board_list"); 
+	public List<Board> board_list(HashMap<String, Object> map){
+		List<Board> list = sqlSession.selectList("board_list", map); 
+		
+		return list;
+	}
+	
+	
+	public List<Board> notice_list(HashMap<String, Object> map){
+		List<Board> list = sqlSession.selectList("notice_list", map); 
 		return list;
 	}
 
-	
+	@Override
+	public int getCount(HashMap<String, Object> map) {
+		return ((Integer) sqlSession.selectOne("boardCount", map)).intValue();
+	}
 
 	@Override
 	public Board board_read(int bNum) throws Exception{
@@ -56,4 +68,6 @@ public class BoardService implements BoardDAO {
 	public void board_delete(int bNum) throws Exception {
 		sqlSession.delete("board_delete", bNum);
 	}
+
+
 }

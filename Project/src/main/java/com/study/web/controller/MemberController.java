@@ -157,7 +157,7 @@ public class MemberController {
 		vo.setuName(multipartRequest.getParameter("user_name"));
 		vo.setuId(multipartRequest.getParameter("user_id"));
 		vo.setuPwd(multipartRequest.getParameter("user_pw"));
-		vo.setuClass(multipartRequest.getParameter("user_class"));
+		vo.setuClass(multipartRequest.getParameter("user_class")); 
 		vo.setuDept(multipartRequest.getParameter("user_dept"));
 		vo.setuBirth(multipartRequest.getParameter("user_birth"));
 		vo.setuPhone(multipartRequest.getParameter("user_phone"));

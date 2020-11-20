@@ -14,24 +14,24 @@ import com.study.web.mapper.MemberMapper;
 import com.study.web.vo.Dept;
 import com.study.web.vo.Member;
 
-//Service Å¬·¡½º¸¦ Repository·Î µî·ÏÇÔÀ¸·Î¼­ ºó(bean) Å¬·¡½º·Î »ç¿ëÇÏ´ÉÇÏ°ÔÇÑ´Ù. 
+//Service Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Repositoryï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¼ï¿½ ï¿½ï¿½(bean) Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½Ï°ï¿½ï¿½Ñ´ï¿½. 
 @Repository
 public class MemberDAOService implements MemberDAO {
 
-//Autowired¸¦ »ç¿ëÇÏ¿© sqlSessionÀ» »ç¿ëÇÒ¼ö ÀÖ´Ù.
+//Autowiredï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ sqlSessionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ ï¿½Ö´ï¿½.
 	@Autowired
 	private SqlSession sqlSession;
 
 	@Override
 	public List<Member> memberlist(HashMap<String, Object> map) {
-		System.out.println("È¸¿ø¸ñ·ÏÁ¶È¸ DAO ¸â¹ö¼­ºñ½º ÀÛµ¿");
-		List<Member> list = sqlSession.selectList("memberList", map); // mapper.xml ¿¡¼­ memberList Äõ¸®¹®À» ½ÇÇàÇÏ°Ú´Ù
+		System.out.println("È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸ DAO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ûµï¿½");
+		List<Member> list = sqlSession.selectList("memberList", map); // mapper.xml ï¿½ï¿½ï¿½ï¿½ memberList ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°Ú´ï¿½
 		return list;
 	}
 
 	@Override
 	public int getCount(HashMap<String, Object> map) {
-		System.out.println("±Û °¹¼ö DAO¼­ºñ½º ÀÛµ¿");
+		System.out.println("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ DAOï¿½ï¿½ï¿½ï¿½ ï¿½Ûµï¿½");
 		return ((Integer) sqlSession.selectOne("Count", map)).intValue();
 	}
 
@@ -84,7 +84,7 @@ public class MemberDAOService implements MemberDAO {
 
 	@Override
 	public void modMember(Member vo) {
-		System.out.println("¼öÁ¤");
+		System.out.println("modMember ì„œë¹„ìŠ¤ ì‘ë™");
 		System.out.println(vo.getuImg());
 		System.out.println(vo.getuPwd());
 		System.out.println(vo.getuPhone());
@@ -95,9 +95,8 @@ public class MemberDAOService implements MemberDAO {
 		System.out.println(vo.getuDept());
 		System.out.println(vo.getuClass());
 		System.out.println(vo.getuNum());
-		System.out.println("¼öÁ¤");
-		MemberMapper memberMapper = sqlSession.getMapper(MemberMapper.class);
-		memberMapper.modMember(vo);	
+		System.out.println("modMember ì„œë¹„ìŠ¤ ì¢…ë£Œ");
+		sqlSession.update("modMember", vo);		
 	}
 
 	@Override

@@ -8,20 +8,23 @@ import java.util.Map;
 import com.study.web.vo.Board;
 public interface BoardDAO {
 
-	public List<Board> board_list() throws Exception; // ±Û ¸ñ·Ï
+	public List<Board> board_list(HashMap<String, Object> map) throws Exception; // ï¿½ï¿½ ï¿½ï¿½ï¿½
+
+	public List<Board> notice_list(HashMap<String, Object> map);
+	
+	public int getCount(HashMap<String, Object> map);
+	
+	public Board board_read(int bNum) throws Exception; // ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½
+	
+	public Board board_mod(int bNum) throws Exception; // ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	
-	public Board board_read(int bNum) throws Exception; // °Ô½Ã±Û º¸±â
-	
-	public Board board_mod(int bNum) throws Exception; // °Ô½Ã±Û ¼öÁ¤ º¸±â
-
-	
-	// °Ô½Ã±Û ÀÛ¼º
+	// ï¿½Ô½Ã±ï¿½ ï¿½Û¼ï¿½
 	public void board_write(Board board)throws Exception;
 
-	// °Ô½Ã±Û ¼öÁ¤
+	// ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public void board_update(Board board)throws Exception;
 	
-	// °Ô½Ã±Û »èÁ¦
+	// ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public void board_delete(int bNum) throws Exception;
 }

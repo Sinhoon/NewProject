@@ -9,7 +9,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>상단 영역</title>
+<title>4조 프로젝트</title>
+<style>
+</style>
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -33,31 +36,35 @@
 	}
 %>
 
+
+
+
 <script type="text/javascript">
 	function expireSession() {
 		$("#stime").val("");
 		window.location = "${pageContext.request.contextPath}/login";
 		alert("세션 만료");
 	}
-
 	function sessout() {
-		var alltime = new Date(<%=tim%> - new Date().getTime());	
-		$("#stime").val(alltime.getUTCMinutes() +"분" + alltime.getUTCSeconds() +"초");
-		if(<%=tim%> <= (new Date().getTime()) ){
+		var alltime = new Date(
+<%=tim%>
+	- new Date().getTime());
+		$("#stime").val(
+				alltime.getUTCMinutes() + "분" + alltime.getUTCSeconds() + "초");
+		if (
+<%=tim%>
+	<= (new Date().getTime())) {
 			$("#logout_btn").click();
 			expireSession();
 		}
 	};
-	
-	window.onload = 
-		function() {
-			sessout();
-		};
 
+	window.onload = function() {
+		sessout();
+	};
 	window.setInterval(function() {
 		sessout();
-		}, 1000);
-
+	}, 1000);
 	function changeView(value) {
 		if (value == "0") {
 			location.href = "${pageContext.request.contextPath}/home";
@@ -68,10 +75,10 @@
 		} else if (value == "3") {
 			location.href = "${pageContext.request.contextPath}/logout";
 		} else if (value == "4") {
-			location.href = "${pageContext.request.contextPath}/timeReset?page="+window.location.href;
+			location.href = "${pageContext.request.contextPath}/timeReset?page="
+					+ window.location.href;
 		}
-	}	
-
+	}
 </script>
 
 </head>
@@ -91,17 +98,23 @@
 				<li class="nav-item"><a class="nav-link"
 					onclick="changeView(2)">회원관리</a></li>
 				<li class="nav-item"><a class="nav-link"
-					onclick="changeView(3)" id="logout_btn">로그아웃</a></li>
+					onclick="changeView(3)" id="logout_btn" style="position: relative;  bottom: -5px;right: -950px;">로그아웃</a></li>
 			</ul>
 		</div>
-		<h7 style="color:white"> <%=meb.getuName()%> 님 안녕하세요 </h7>
+		<h7 style="color:white;position: relative; bottom: -5px; right: 250px;">
+		<%=meb.getuName()%> 님 안녕하세요 </h7>
 		<!--  세션 타임 -->
+		<div>
+			<input id="stime" value=""
+				style="background-color: black; color: white; position: relative; bottom: -5px; right: 100px; width: 100px" disabled>
+			<button id="timeReset" value="reset" onclick="changeView(4)"
+				style="background-color: black; color: white; position: relative; bottom: -5px; right: 100px;">리셋</button>
+		</div>
 	</nav>
 
-	<div>
-		<input id="stime" value="">
-		<button id="timeReset" value="reset" onclick="changeView(4)">리셋</button>
-	</div>	
 
 </body>
+
+
+
 </html>

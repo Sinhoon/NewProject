@@ -1,6 +1,11 @@
 package com.study.web.controller;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.study.web.dao.BoardDAO;
+import com.study.web.paging.Paging;
 import com.study.web.vo.Board;
 
 @Controller
@@ -25,20 +32,76 @@ public class BoardController {
 	@Autowired
 	private BoardDAO boardService;
 
-	// 占쌉쏙옙占쏙옙 占쏙옙占� 占쏙옙회
-	/*@RequestMapping(value = "/boardList", method = RequestMethod.GET)
-	public String boardList(Model model) throws Exception {
-		System.out.println("占쌉쏙옙占쏙옙 占쏙옙占쏙옙占싫� cont 占쌜듸옙");
-		model.addAttribute("list", boardService.board_list());
-		return "/board/boardList";
-	}*/
-
-	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
-	public String boardList(Model model) throws Exception {
+	@RequestMapping(value = "/boardList")
+	public ModelAndView boardList(Locale locale, Model model, HttpServletRequest request,
+			@RequestParam(value = "pageNum", defaultValue = "1") int currentPage,
+			@RequestParam(value = "keyField", defaultValue = "all") String keyField, 
+			@RequestParam(value = "keyWord", defaultValue = "") String keyWord,
+			@RequestParam(value = "keyDept", defaultValue = "0") int keyDept) throws Exception {
+		
 		System.out.println("게시판 목록");
-		model.addAttribute("list", boardService.board_list());
-		return "/board/boardList";
+		
+		String pagingHtml = "";
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		HashMap<String, Object> map = new HashMap(); 
+		map.put("keyField", keyField);
+		map.put("keyWord", keyWord); 
+		map.put("keyDept", keyDept);
+		
+		int count = this.boardService.getCount(map);
+		
+		
+		Paging page = new Paging(Integer.toString(keyDept), keyField, keyWord, currentPage, count, this.pageSize, this.blockCount,
+				"boardList");
+
+		pagingHtml = page.getPagingHtml().toString();
+
+		map.put("start", Integer.valueOf(page.getStartCount()) - 1);
+		map.put("end", Integer.valueOf(page.getEndCount()));
+
+		System.out.println(Integer.valueOf(page.getStartCount())); // 1 1��������ϳ�?
+		System.out.println(Integer.valueOf(page.getEndCount())); // 10
+
+		List<com.study.web.vo.Board> boardList = null;
+		List<com.study.web.vo.Board> noticeList = null;
+		
+		if (count > 0) { 
+			noticeList = this.boardService.notice_list(map); 
+			System.out.println("notice");
+		} else {
+			noticeList = Collections.emptyList();
+			System.out.println("count�� 0���� �۽��ϴ�.");
+		}
+		
+		if (count > 0) { 
+			boardList = this.boardService.board_list(map); 
+			System.out.println("board > 0");
+		} else {
+			boardList = Collections.emptyList();
+			System.out.println("board < 0");
+		}
+		int number = count - (currentPage - 1) * this.pageSize;
+
+		// view ȭ���� main.jsp�� DB�κ��� �о�� �����͸� �����ش�.
+		ModelAndView result = new ModelAndView();
+		
+		//System.out.println("sssssssssssssssssssss"+keyDept);
+
+		System.out.println("sssssssssssssssssssss"+count);
+
+		
+		result.setViewName("/board/boardList"); // ���� jsp �̸�
+		result.addObject("notice", noticeList);
+		result.addObject("list", boardList); // ȸ�����
+		result.addObject("count", Integer.valueOf(count)); // �ۼ�
+		result.addObject("currentPage", Integer.valueOf(currentPage)); // ����������
+		result.addObject("pagingHtml", pagingHtml);
+		result.addObject("number", Integer.valueOf(number)); // ��ü ������
+		result.addObject("keyDeptSave",keyDept);
+
+		return result;		
 	}
+	
 	
 	// 게시글 읽기
 	@RequestMapping(value = "/board_read.do", method = RequestMethod.GET)

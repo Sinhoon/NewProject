@@ -34,7 +34,7 @@ public class LoginController {
 	private LoginDAO loginDAOService;
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-	// ·Î±×ÀÎ ½ÇÇà
+	// æ¿¡ì’“ë ‡ï¿½ì”¤ ï¿½ë–ï¿½ë»¾
 	@ResponseBody
 	@RequestMapping(value = "/loginPro.do", method = RequestMethod.POST)
 	public HashMap<String, String> login(Locale locale, Model model, HttpServletRequest request, HttpSession session)
@@ -69,7 +69,7 @@ public class LoginController {
 		return result;
 	}
 
-	// ·Î±×¾Æ¿ô
+	// æ¿¡ì’“ë ‡ï¿½ë¸˜ï¿½ì
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -77,10 +77,10 @@ public class LoginController {
 	}
 
 
-	// ¼¼¼Ç°»½Å
+	// ï¿½ê½­ï¿½ë€¡åª›ê¹†ë–Š
 	@RequestMapping(value = "/timeReset", method = RequestMethod.GET)
 	public String timeReset(HttpServletRequest request,HttpSession session) {
-		session.setAttribute("Time", Double.parseDouble(System.currentTimeMillis() + 100000 + ""));
+		session.setAttribute("Time", Double.parseDouble(System.currentTimeMillis() + 1000000 + ""));
 		return "redirect:"+ request.getParameter("page") ;
 	}
 }

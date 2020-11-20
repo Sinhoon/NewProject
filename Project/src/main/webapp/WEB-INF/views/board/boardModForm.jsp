@@ -12,8 +12,30 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>게시글</title>
+<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+<script>
+$(function(){
+    $('#update').on('click', check);
+})
+function check() {
+    
+        if ($('#title').val().trim() == '') {
+        	alert('제목을 입력해주세요');
+            $('#title').focus();
+        }
+        else if ($('#content').val().trim() == ''){
+        	alert('내용을 입력해주세요');
+            $('#content').focus();
+        }
+        else {
+        	alert('게시글이 수정됩니다');
+        }
+    
+}
+</script>
 </head>
 <body>
+<br/>
 	<div class="w3-content w3-container w3-margin-top">
 		<div class="w3-container w3-card-4">
 			<div class="w3-center w3-large w3-margin-top">
@@ -32,13 +54,15 @@
 							<option value="0">전체 공지글</option>
 						</c:if>
 					</select>
-					<input type="text" class="w3-input w3-border w3-round" id="title" name="bTitle" value="${update.bTitle}" />
+					<input type="text" id="title" class="w3-input w3-border w3-round" id="title" name="bTitle" value="${update.bTitle}" required/>
 					<br />
-					<label for="content">수정</label>
-					<textarea class="w3-input w3-border w3-round" id="content" name="bContent" rows="10" style="resize: vertical;">${update.bContent}</textarea>
+					<label for="content"><%=meb.getuName()%> 님이 수정중입니다..</label>
+					<textarea class="w3-input w3-border w3-round" id="content" name="bContent" rows="10" style="resize: vertical;" required>${update.bContent}</textarea>
 					<input type="hidden" name="bNum" value="${update.bNum}">
+					<input type="hidden" name="bModuser" value=<%=meb.getuNum()%>>
+					<input type="hidden" name="bModname" value=<%=meb.getuName()%>>
 					<p class="w3-center">
-						<button type="submit" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">확인</button>
+						<button type="submit" id="update" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">확인</button>
 						<button type="button" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-margin-bottom w3-round" onclick="history.go(-1)">취소</button>
 					</p>
 				</form>

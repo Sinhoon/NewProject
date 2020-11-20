@@ -3,16 +3,30 @@ package com.study.web.vo;
 
 public class Board {
 	private int bNum;
-	private String bDept;
+	private int bDept;
 	private String bKind;
 	private String bTitle;
 	private String bContent;
 	private String bFile;
 	private String bReguser;
+	private String bRegname;
 	private String bRegdate;
 	private String bModdate;
 	private String bModuser;
+	private String bModname;
 	
+	public String getbModname() {
+		return bModname;
+	}
+	public void setbModname(String bModname) {
+		this.bModname = bModname;
+	}
+	public String getbRegname() {
+		return bRegname;
+	}
+	public void setbRegname(String bRegname) {
+		this.bRegname = bRegname;
+	}
 	
 	public int getbNum() {
 		return bNum;
@@ -20,10 +34,10 @@ public class Board {
 	public void setbNum(int bNum) {
 		this.bNum = bNum;
 	}
-	public String getbDept() {
+	public int getbDept() {
 		return bDept;
 	}
-	public void setbDept(String bDept) {
+	public void setbDept(int bDept) {
 		this.bDept = bDept;
 	}
 	public String getbKind() {

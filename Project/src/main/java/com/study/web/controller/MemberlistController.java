@@ -1,4 +1,4 @@
-// È¸¿ø°ü¸®¸¦ À§ÇÑ ÄÁÆ®·Ñ·¯ ÀÔ´Ï´Ù. -ÀÌÀÇÂù
+// È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ ï¿½Ô´Ï´ï¿½. -ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 package com.study.web.controller;
 
@@ -44,11 +44,11 @@ public class MemberlistController {
 	private MemberDAO memberDAOService;
 	private static final Logger logger = LoggerFactory.getLogger(MemberlistController.class);
 
-	// È¸¿øÁ¶È¸ ÆäÀÌÁö
+	// È¸ï¿½ï¿½ï¿½ï¿½È¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping(value = "/memberlist") // http://localhost:8090/web/memberlist
 	public ModelAndView read(Locale locale, Model model, HttpServletRequest request, HttpSession session,
 			@RequestParam(value = "pageNum", defaultValue = "1") int currentPage,
-			@RequestParam(value = "keyField", defaultValue = "all") String keyField, // Á¦¸ñ, ÀÌ¸§, ³»¿ë, ÀüÃ¼
+			@RequestParam(value = "keyField", defaultValue = "all") String keyField, // ï¿½ï¿½ï¿½ï¿½, ï¿½Ì¸ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Ã¼
 			@RequestParam(value = "keyWord", defaultValue = "") String keyWord,
 			@RequestParam(value = "showdept", defaultValue = "") String showdept,
 			@RequestParam(value = "before_showdept", defaultValue = "0") String before_showdept,
@@ -57,20 +57,20 @@ public class MemberlistController {
 			) {
 		String pagingHtml = "";
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		HashMap<String, Object> map = new HashMap(); // ÆäÀÌÁö³Ñ¹ö, Å°ÇÊµå, Å°¿öµå °¡Á®¿Í¼­ ÇØ½¬ ¸Ê¿¡ ÀúÀå
+		HashMap<String, Object> map = new HashMap(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½, Å°ï¿½Êµï¿½, Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ ï¿½Ø½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 		Member mav = (Member) session.getAttribute("Member");
 		String sDept = mav.getuDept();	
 		if (showdept.equals("")) {
 			showdept = mav.getuDept();
 		}
 
-		map.put("showdept", showdept); // ºÎ¼­ ¼±ÅÃ
+		map.put("showdept", showdept); // ï¿½Î¼ï¿½ ï¿½ï¿½ï¿½ï¿½
 		map.put("keyField", keyField);
-		map.put("keyWord", keyWord); // ÇØ½¬¸Ê Å¸ÀÔÀÇ map ¿¡ ÀúÀå keyWord¿¡´Â ÆÄ¶÷À¸·Î °¡Á®¿Â keyWord¸¦ ÀúÀå
+		map.put("keyWord", keyWord); // ï¿½Ø½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ map ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ keyWordï¿½ï¿½ï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ keyWordï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-		int count = this.memberDAOService.getCount(map); // DAOs ¿¬°á Ä«¿îÆ®¿¡ ÀúÀå
-		System.out.println("ÇöÀç È¸¿ø¼ö´Â = " + count);
-		System.out.println("°Ë»öÀ¯Çü , Å°¿öµå°ª(°Ë»ö¾î) = " + keyField + ' ' + keyWord);
+		int count = this.memberDAOService.getCount(map); // DAOs ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		//System.out.println("ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ = " + count);
+		//System.out.println("ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ , Å°ï¿½ï¿½ï¿½å°ª(ï¿½Ë»ï¿½ï¿½ï¿½) = " + keyField + ' ' + keyWord);
 		Paging page = new Paging(showdept, keyField, keyWord, currentPage, count, this.pageSize, this.blockCount,
 				"memberlist.do");
 
@@ -80,30 +80,32 @@ public class MemberlistController {
 		map.put("end", Integer.valueOf(page.getEndCount()));
 
 		List<com.study.web.vo.Member> memberList = null;
-		if (count > 0) { // ·¹ÄÚµå °¹¼ö°¡ 0º¸´Ù Å©¸é
+		if (count > 0) { // ï¿½ï¿½ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½
 			System.out.println(map);
-			memberList = this.memberDAOService.memberlist(map); // DAO¿¡ ¿¬°á
+			memberList = this.memberDAOService.memberlist(map); // DAOï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			System.out.println(count);
 		} else {
-			memberList = Collections.emptyList(); // ¾Æ´Ï¸é ºñ¾îÀÖ°Ô ³ª¿À°ÔÇÔ
+			memberList = Collections.emptyList(); // ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		}
 		int number = count - (currentPage - 1) * this.pageSize;
-		// view È­¸éÀÎ main.jsp¿¡ DB·ÎºÎÅÍ ÀÐ¾î¿Â µ¥ÀÌÅÍ¸¦ º¸¿©ÁØ´Ù.
+		// view È­ï¿½ï¿½ï¿½ï¿½ main.jspï¿½ï¿½ DBï¿½Îºï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½.
 		ModelAndView result = new ModelAndView();
-		// addObject view¿¡ ³Ñ¾î°¡´Â µ¥ÀÌÅÍ
-		System.out.println(memberList);
-		result.setViewName("/member/memberlist"); // ºäÀÇ jsp ÀÌ¸§
-		result.addObject("result", memberList); // È¸¿ø¸ñ·Ï
-		result.addObject("count", Integer.valueOf(count)); // ±Û¼ö
-		result.addObject("currentPage", Integer.valueOf(currentPage)); // ÇöÀçÆäÀÌÁö
+		// addObject viewï¿½ï¿½ ï¿½Ñ¾î°¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//System.out.println(memberList);
+		result.setViewName("/member/memberlist"); // ï¿½ï¿½ï¿½ï¿½ jsp ï¿½Ì¸ï¿½
+		result.addObject("result", memberList); // È¸ï¿½ï¿½ï¿½ï¿½ï¿½
+		result.addObject("count", Integer.valueOf(count)); // ï¿½Û¼ï¿½
+		result.addObject("currentPage", Integer.valueOf(currentPage)); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		result.addObject("pagingHtml", pagingHtml);
-		result.addObject("number", Integer.valueOf(number)); // ÀüÃ¼ ÆäÀÌÁö
-		List<Dept> deptlist = memberDAOService.getDeptlist(); // ºÎ¼­ Á¾·ù
+		result.addObject("number", Integer.valueOf(number)); // ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		result.addObject("end",Integer.valueOf( (int) Math.floor((count/10)+1 ) ) );
+		
+		List<Dept> deptlist = memberDAOService.getDeptlist(); // ï¿½Î¼ï¿½ ï¿½ï¿½ï¿½ï¿½
 		deptlist.remove(0);
 		result.addObject("deptlist", deptlist);
-		result.addObject("before_showdept", showdept); // ÀÌÀü ÆäÀÌÁö ¼±ÅÃ¿É¼Ç
-		result.addObject("before_keyWord", keyWord); // ÀÌÀü ÆäÀÌÁö ¼±ÅÃ¿É¼Ç
-		result.addObject("before_keyField", keyField); // ÀÌÀü ÆäÀÌÁö ¼±ÅÃ¿É¼Ç
+		result.addObject("before_showdept", showdept); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¿É¼ï¿½
+		result.addObject("before_keyWord", keyWord); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¿É¼ï¿½
+		result.addObject("before_keyField", keyField); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¿É¼ï¿½
 		return result;
 	}
 
@@ -113,14 +115,14 @@ public class MemberlistController {
 	}
 
 /////////////////////////////////////////////
-// È¸¿ø ÀÚ¼¼È÷ º¸±â ÄÁÆ®·Ñ·¯
+// È¸ï¿½ï¿½ ï¿½Ú¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½
 
 	@RequestMapping(value = "/member_read.do", method = RequestMethod.GET)
 	public ModelAndView read(@RequestParam("uNum") int uNum, Model model) {
-		System.out.println("È¸¿ø»ó¼¼º¸±â ÄÁÆ®·Ñ·¯ ÀÛµ¿"); // ÀÛµ¿ÀºÇÔ
-		System.out.println("Á¶È¸ÇÏ´Â È¸¿øÀÇ uNum=" + uNum); // Àß¹Þ¾Æ¿È
+		System.out.println("È¸ï¿½ï¿½ï¿½ó¼¼ºï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ ï¿½Ûµï¿½"); // ï¿½Ûµï¿½ï¿½ï¿½ï¿½ï¿½
+		System.out.println("ï¿½ï¿½È¸ï¿½Ï´ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ uNum=" + uNum); // ï¿½ß¹Þ¾Æ¿ï¿½
 
-		Member member = memberDAOService.member_read(uNum); // ÀÏÇØ¶ó DB
+		Member member = memberDAOService.member_read(uNum); // ï¿½ï¿½ï¿½Ø¶ï¿½ DB
 		List<Class> classlist = memberDAOService.getClasslist();
 		List<Dept> deptlist = memberDAOService.getDeptlist();
 		classlist.remove(0);
@@ -135,11 +137,11 @@ public class MemberlistController {
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////// ¼öÁ¤Æû ºÒ·¯¿À´Â ÄÁÆ®·Ñ·¯
+///////////////////////////////////////////// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½
 	@RequestMapping("/member_update.do")
 	public ModelAndView member_update(@RequestParam("uNum") int uNum, Model model) {
-		System.out.println("È¸¿øÁ¤º¸ ¼öÁ¤Æû ºÒ·¯¿À´Â ÄÁÆ®·Ñ·¯ ÀÛµ¿"); // ÀÛµ¿ÀºÇÔ
-		System.out.println("³Ñ¾î¿À´Â uNum°ª " + uNum);
+		System.out.println("È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ ï¿½Ûµï¿½"); // ï¿½Ûµï¿½ï¿½ï¿½ï¿½ï¿½
+		System.out.println("ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ uNumï¿½ï¿½ " + uNum);
 		Member member = memberDAOService.member_read(uNum);
 		ModelAndView mav = new ModelAndView();
 
@@ -149,12 +151,12 @@ public class MemberlistController {
 	}
 ////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////// ¼öÁ¤µÈ ±ÛÀ» DB¿¡ ÀúÀåÇÏ´Â ÄÁÆ®·Ñ·¯
+///////////////////////////////////////////// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½
 	@RequestMapping(value = "member_updateProc.do", method = RequestMethod.POST)
 	public ModelAndView member_updateProc(HttpServletRequest request, Member member,
-			@RequestParam("select_uDept") int select_uDept) { // ¹Þ¾Æ¿À´Â°Å
+			@RequestParam("select_uDept") int select_uDept) { // ï¿½Þ¾Æ¿ï¿½ï¿½Â°ï¿½
 
-// »çÁø º¯°æÀ»À§ÇØ ÆÄÀÏ ¾÷·Îµå°ü·Ã ÄÚµå Ãß°¡
+// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ß°ï¿½
 
 //////////////////////////////
 
@@ -162,21 +164,21 @@ public class MemberlistController {
 		map.put("uNum", member.getuNum());
 		map.put("uPhone", member.getuPhone());
 		map.put("uDept", Integer.toString(select_uDept));
+		
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½È£= " + member.getuNum());
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½È£= " + member.getuPhone());
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½Î¼ï¿½ï¿½ï¿½È£= " + select_uDept);
 
-		System.out.println("¼öÁ¤ÈÄ ÀúÀåÇÏ·Á´Â È¸¿ø¹øÈ£= " + member.getuNum());
-		System.out.println("¼öÁ¤ÈÄ ÀúÀåÇÏ·Á´Â ÀüÈ­¹øÈ£= " + member.getuPhone());
-		System.out.println("¼öÁ¤ÈÄ ÀúÀåÇÏ·Á´Â ºÎ¼­¹øÈ£= " + select_uDept);
-
-		System.out.println("¼öÁ¤µÈ È¸¿øÁ¤º¸¸¦ ÀúÀåÇÏ´Â ÄÁÆ®·Ñ·¯ ÀÛµ¿"); // ÀÛµ¿È®ÀÎ
-		memberDAOService.member_updateProc(map); // DAO ¿¬°á
+		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ ï¿½Ûµï¿½"); // ï¿½Ûµï¿½È®ï¿½ï¿½
+		memberDAOService.member_updateProc(map); // DAO ï¿½ï¿½ï¿½ï¿½
 
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("redirect:/memberlist.do"); // ÀÛµ¿
+		mav.setViewName("redirect:/memberlist.do"); // ï¿½Ûµï¿½
 // mav.setViewName("/member_read.do?uNum=member.getuNum()"); 	
 		return mav;
 	}
 
-	// °èÁ¤ Àá±Ý
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	@ResponseBody
 	@RequestMapping(value = "/lockPro.do", method = RequestMethod.GET)
 	public String lock(HttpServletRequest request) throws Exception {
@@ -185,7 +187,7 @@ public class MemberlistController {
 		return "success";
 	}
 
-	// °èÁ¤ Àá±Ý ÇØÃ¼
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
 	@ResponseBody
 	@RequestMapping(value = "/unlockPro.do", method = RequestMethod.GET)
 	public String unlock(HttpServletRequest request) throws Exception {
